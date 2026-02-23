@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastinAI Logo Comparison</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap"
+        rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: #FFFFFF;
+            color: #1A1A1A;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 24px;
+            gap: 80px;
+        }
+
+        h1 {
+            font-family: 'Fraunces', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            text-align: center;
+            color: #1A1A1A;
+        }
+
+        h1 em {
+            color: #FF6914;
+            font-style: italic;
+        }
+
+        p.sub {
+            color: #999;
+            font-size: 0.85rem;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .option {
+            border: 1px solid #E0E0E0;
+            border-radius: 20px;
+            padding: 48px 32px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+            transition: box-shadow 0.25s, border-color 0.25s;
+            cursor: default;
+        }
+
+        .option:hover {
+            border-color: #C0C0C0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .option-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #999;
+        }
+
+        .logo-display {
+            display: flex;
+            align-items: baseline;
+            gap: 0;
+            line-height: 1;
+        }
+
+        .option-desc {
+            font-size: 0.82rem;
+            color: #666;
+            line-height: 1.6;
+            font-weight: 300;
+            max-width: 260px;
+        }
+
+        /* --- Option A: The Weight Shift --- */
+        .logo-a .fast {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 600;
+            font-size: 3.2rem;
+            color: #1A1A1A;
+            letter-spacing: -0.03em;
+        }
+
+        .logo-a .in {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 3.2rem;
+            color: #999999;
+            letter-spacing: -0.01em;
+        }
+
+        .logo-a .ai {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 3.2rem;
+            color: #FF6914;
+            letter-spacing: -0.02em;
+        }
+
+        /* --- Option B: The Dot Separator --- */
+        .logo-b .fast {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-size: 3.2rem;
+            color: #1A1A1A;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-b .dot {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 2.4rem;
+            color: #0D7377;
+            margin: 0 3px;
+            font-weight: 300;
+        }
+
+        .logo-b .in {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 3.2rem;
+            color: #999999;
+            letter-spacing: -0.01em;
+        }
+
+        .logo-b .ai {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 3.2rem;
+            color: #FF6914;
+            letter-spacing: -0.02em;
+        }
+
+        /* --- Option C: The Minimal Split --- */
+        .logo-c .fastin {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            font-size: 3.2rem;
+            color: #1A1A1A;
+            letter-spacing: -0.02em;
+            text-transform: lowercase;
+        }
+
+        .logo-c .ai {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 3.6rem;
+            color: #FF6914;
+            letter-spacing: -0.03em;
+        }
+
+        /* --- Navbar Preview --- */
+        .navbar-preview {
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .navbar-preview h3 {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #999;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .nav-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #F8F8F8;
+            border-radius: 14px;
+            padding: 16px 40px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0;
+        }
+
+        /* Navbar sizes */
+        .nav-a .fast {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #1A1A1A;
+            letter-spacing: -0.03em;
+        }
+
+        .nav-a .in {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: #999;
+        }
+
+        .nav-a .ai {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: #FF6914;
+        }
+
+        .nav-b .fast {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-size: 1.15rem;
+            color: #1A1A1A;
+        }
+
+        .nav-b .dot {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: #0D7377;
+            margin: 0 1px;
+        }
+
+        .nav-b .in {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.15rem;
+            color: #999;
+        }
+
+        .nav-b .ai {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: #FF6914;
+        }
+
+        .nav-c .fastin {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            font-size: 1.15rem;
+            color: #1A1A1A;
+            text-transform: lowercase;
+        }
+
+        .nav-c .ai {
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #FF6914;
+        }
+
+        .nav-label {
+            font-size: 0.65rem;
+            color: #BBB;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 780px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-row {
+                flex-direction: column;
+                gap: 24px;
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <h1>Redesigning <em>FastinAI</em></h1>
+        <p class="sub" style="margin-top: 12px;">Three concepts. Same brand. Pick the one that feels right.</p>
+    </div>
+
+    <!-- Big display comparison -->
+    <div class="options">
+
+        <!-- Option A -->
+        <div class="option">
+            <span class="option-label">Option A — The Weight Shift</span>
+            <div class="logo-display logo-a">
+                <span class="fast">FAST</span><span class="in">in</span><span class="ai">AI</span>
+            </div>
+            <p class="option-desc">
+                Bold FAST + thin "in" + italic orange AI.<br>
+                Weight contrast reveals the acronym naturally. Most versatile.
+            </p>
+        </div>
+
+        <!-- Option B -->
+        <div class="option">
+            <span class="option-label">Option B — The Dot Separator</span>
+            <div class="logo-display logo-b">
+                <span class="fast">FAST</span><span class="dot">·</span><span class="in">in</span><span
+                    class="ai">AI</span>
+            </div>
+            <p class="option-desc">
+                Teal midpoint dot creates a breath mark.<br>
+                Says "this is an acronym" without being heavy-handed.
+            </p>
+        </div>
+
+        <!-- Option C -->
+        <div class="option">
+            <span class="option-label">Option C — The Minimal Split</span>
+            <div class="logo-display logo-c">
+                <span class="fastin">fastin</span><span class="ai">AI</span>
+            </div>
+            <p class="option-desc">
+                All lowercase except AI. Confident understatement.<br>
+                Like openAI, deepMind, fastAPI.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Navbar size preview -->
+    <div class="navbar-preview">
+        <h3>How they look at navbar size</h3>
+        <div class="nav-row">
+            <div class="nav-group">
+                <div class="nav-item nav-a">
+                    <span class="fast">FAST</span><span class="in">in</span><span class="ai">AI</span>
+                </div>
+                <span class="nav-label">A</span>
+            </div>
+            <div class="nav-group">
+                <div class="nav-item nav-b">
+                    <span class="fast">FAST</span><span class="dot">·</span><span class="in">in</span><span
+                        class="ai">AI</span>
+                </div>
+                <span class="nav-label">B</span>
+            </div>
+            <div class="nav-group">
+                <div class="nav-item nav-c">
+                    <span class="fastin">fastin</span><span class="ai">AI</span>
+                </div>
+                <span class="nav-label">C</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
