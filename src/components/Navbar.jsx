@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { LogoInline } from './AnimatedLogo'
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
@@ -23,9 +24,7 @@ export default function Navbar() {
 
                 {/* Logo */}
                 <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.15rem', fontWeight: 400, color: 'var(--text)', letterSpacing: '-0.02em' }}>
-                        Fastin<span style={{ color: 'var(--orange)', fontStyle: 'italic' }}>AI</span>
-                    </span>
+                    <LogoInline size="navbar" />
                 </a>
 
                 {/* Desktop nav */}

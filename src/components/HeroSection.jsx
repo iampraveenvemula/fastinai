@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import FASTReveal from './AnimatedLogo'
 
 export default function HeroSection() {
     const ref = useRef(null)
@@ -13,45 +14,53 @@ export default function HeroSection() {
             borderBottom: '1px solid var(--border)',
             background: 'var(--bg)',
         }}>
-            <div className="container-sm" style={{ paddingTop: 32, paddingBottom: 80 }}>
+            <div className="container" style={{ paddingTop: 32, paddingBottom: 80 }}>
 
-                {/* Eyebrow */}
-                <div ref={ref} className="reveal" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 40 }}>
-                    <span className="dot" />
-                    <span className="label">F.A.S.T. — Factory for Advanced Skills &amp; Talent</span>
+                {/* Two-column: FAST reveal | Headline */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'auto 1fr',
+                    gap: 'clamp(40px, 6vw, 96px)',
+                    alignItems: 'center',
+                    marginBottom: 80,
+                }}>
+                    {/* Left: FAST Acronym Reveal */}
+                    <div>
+                        <FASTReveal />
+                    </div>
+
+                    {/* Right: Headline + Sub + CTAs */}
+                    <div ref={ref} className="reveal">
+                        <h1 className="display" style={{
+                            fontSize: 'clamp(2.6rem, 5.5vw, 5.5rem)',
+                            color: 'var(--text)',
+                            marginBottom: 28,
+                        }}>
+                            From Theory<br />
+                            to{' '}
+                            <em style={{ fontStyle: 'italic', color: 'var(--orange)' }}>Production.</em>
+                        </h1>
+
+                        <p style={{
+                            fontSize: 'clamp(1rem, 1.6vw, 1.15rem)',
+                            color: 'var(--text-muted)',
+                            lineHeight: 1.75,
+                            maxWidth: 460,
+                            marginBottom: 40,
+                            fontWeight: 300,
+                        }}>
+                            The forge for Senior AI Engineers.
+                            Production-grade training and elite enterprise consulting.
+                        </p>
+
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+                            <a href="#academy" className="btn btn-fill">Join the Academy →</a>
+                            <a href="#consulting" className="btn btn-outline">Book Consulting</a>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Headline */}
-                <h1 className="reveal delay-1 display" style={{
-                    fontSize: 'clamp(3rem, 7vw, 6.5rem)',
-                    color: 'var(--text)',
-                    marginBottom: 32,
-                }}>
-                    From Theory<br />
-                    to{' '}
-                    <em style={{ fontStyle: 'italic', color: 'var(--orange)' }}>Production.</em>
-                </h1>
-
-                {/* Sub */}
-                <p className="reveal delay-2" style={{
-                    fontSize: 'clamp(1.05rem, 1.8vw, 1.2rem)',
-                    color: 'var(--text-muted)',
-                    lineHeight: 1.75,
-                    maxWidth: 500,
-                    marginBottom: 48,
-                    fontWeight: 300,
-                }}>
-                    F.A.S.T. is the forge for Senior AI Engineers.
-                    Production-grade training and elite enterprise consulting.
-                </p>
-
-                {/* CTAs */}
-                <div className="reveal delay-3" style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 80 }}>
-                    <a href="#academy" className="btn btn-fill">Join the Academy →</a>
-                    <a href="#consulting" className="btn btn-outline">Book Consulting</a>
-                </div>
-
-                {/* Stats */}
+                {/* Stats row */}
                 <div className="reveal delay-4" style={{
                     display: 'flex', gap: 0, flexWrap: 'wrap',
                     borderTop: '1px solid var(--border)', paddingTop: 40,
@@ -73,6 +82,13 @@ export default function HeroSection() {
                     ))}
                 </div>
             </div>
+
+            {/* Mobile: stack columns */}
+            <style>{`
+                @media (max-width: 768px) {
+                    .hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+                }
+            `}</style>
         </section>
     )
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { LogoInline } from './AnimatedLogo'
 
 export default function Footer() {
     const [email, setEmail] = useState('')
@@ -41,7 +42,7 @@ export default function Footer() {
                     {/* Brand */}
                     <div style={{ maxWidth: 220 }}>
                         <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 400, color: 'var(--text)', letterSpacing: '-0.02em', display: 'block', marginBottom: 10 }}>
-                            Fastin<em style={{ color: 'var(--orange)', fontStyle: 'italic' }}>AI</em>
+                            <LogoInline size="footer" />
                         </span>
                         <p style={{ color: 'var(--text-muted)', fontSize: '0.83rem', lineHeight: 1.65, fontWeight: 300 }}>
                             Factory for Advanced Skills &amp; Talent. Dubai, UAE &amp; India.
