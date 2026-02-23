@@ -29,7 +29,7 @@ export default function HeroSection() {
                 }}>
                     From Theory<br />
                     to{' '}
-                    <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>Production.</em>
+                    <em style={{ fontStyle: 'italic', color: 'var(--orange)' }}>Production.</em>
                 </h1>
 
                 {/* Sub */}
@@ -67,7 +67,7 @@ export default function HeroSection() {
                             paddingLeft: i > 0 ? 32 : 0,
                             borderRight: i < 2 ? '1px solid var(--border)' : 'none',
                         }}>
-                            <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.4rem', fontWeight: 300, letterSpacing: '-0.03em', color: 'var(--text)', lineHeight: 1 }}>{s.v}</div>
+                            <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.4rem', fontWeight: 300, letterSpacing: '-0.03em', color: 'var(--orange)', lineHeight: 1 }}>{s.v}</div>
                             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 6, fontWeight: 400 }}>{s.l}</div>
                         </div>
                     ))}

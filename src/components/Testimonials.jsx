@@ -59,7 +59,7 @@ export default function Testimonials() {
                             {/* Quote mark */}
                             <span style={{
                                 fontFamily: 'var(--font-display)', fontStyle: 'italic',
-                                fontSize: '4rem', lineHeight: 0.8, color: 'var(--accent)',
+                                fontSize: '4rem', lineHeight: 0.8, color: 'var(--orange)',
                                 fontWeight: 300, display: 'block',
                             }}>"</span>
 

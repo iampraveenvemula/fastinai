@@ -62,7 +62,7 @@ export default function FounderSection() {
                         <span className="label" style={{ display: 'block', marginBottom: 16 }}>The founder</span>
                         <h2 className="display" style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', color: 'var(--text)', marginBottom: 24 }}>
                             Built by someone<br />
-                            who's <em style={{ color: 'var(--accent)', fontStyle: 'italic' }}>shipped it.</em>
+                            who's <em style={{ color: 'var(--orange)', fontStyle: 'italic' }}>shipped it.</em>
                         </h2>
                         <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.8, fontWeight: 300, marginBottom: 20 }}>
                             FastinAI was founded by a practitioner who spent a decade building AI systems for banks, fintechs, and Fortune 500 companies across the Middle East and India — before any of this was "cool."

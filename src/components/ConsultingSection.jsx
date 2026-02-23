@@ -28,7 +28,7 @@ export default function ConsultingSection() {
                         <span className="label" style={{ display: 'block', marginBottom: 16 }}>The Lab — Consulting</span>
                         <h2 className="display" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', color: 'var(--text)', maxWidth: 480 }}>
                             Enterprise AI that actually<br />
-                            <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>works.</em>
+                            <em style={{ fontStyle: 'italic', color: 'var(--orange)' }}>works.</em>
                         </h2>
                     </div>
                     <a href="mailto:hello@fastinai.com" className="btn btn-fill">Book a discovery call →</a>
