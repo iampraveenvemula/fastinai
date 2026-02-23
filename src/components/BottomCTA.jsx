@@ -24,7 +24,7 @@ export default function BottomCTA() {
                     }}>
                         Stop watching.<br />
                         Start{' '}
-                        <em style={{ fontStyle: 'italic', color: 'var(--accent)' }}>building.</em>
+                        <em style={{ fontStyle: 'italic', color: 'var(--orange)' }}>building.</em>
                     </h2>
 
                     <p style={{

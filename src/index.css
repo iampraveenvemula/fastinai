@@ -7,12 +7,16 @@
   --surface: #FFFFFF;
   --border: #E0E0E0;
   --border-mid: #C0C0C0;
-  --accent: #00A4A6;
-  --accent-dim: rgba(0, 164, 166, 0.09);
-  --navy: #0A0A0A;
-  --text: #0A0A0A;
-  --text-muted: #555555;
-  --text-light: #888888;
+  --accent: #0D7377;
+  /* FastinAI Teal — trust, info */
+  --accent-dim: rgba(13, 115, 119, 0.09);
+  --orange: #FF6914;
+  /* FastinAI Orange — action, energy */
+  --orange-dim: rgba(255, 105, 20, 0.09);
+  --text: #1A1A1A;
+  --text-body: #333333;
+  --text-muted: #666666;
+  --text-light: #999999;
   --font-display: 'Fraunces', 'Georgia', serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
 }
