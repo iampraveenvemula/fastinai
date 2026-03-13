@@ -108,7 +108,7 @@ export default function FASTReveal() {
     }, [])
 
     return (
-        <div style={{ padding: '40px 0 20px', minHeight: '120px', width: '100%' }}>
+        <div style={{ padding: '40px 0 20px', minHeight: '180px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
             <div style={{ 
                 display: 'flex', 
                 flexWrap: 'wrap', 

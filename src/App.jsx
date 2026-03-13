@@ -24,7 +24,7 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <Navbar />
-      <div className="container" style={{ paddingTop: '80px', marginBottom: '20px', textAlign: 'center' }}>
+      <div className="container" style={{ paddingTop: '80px', marginBottom: '20px', textAlign: 'center', minHeight: '220px' }}>
         <FASTReveal />
       </div>
       <main>
