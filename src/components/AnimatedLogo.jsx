@@ -1,217 +1,239 @@
-import { useEffect, useState, useRef } from 'react'
+import { useState, useEffect, useReducer, useRef } from 'react'
 
-/*
-  FAST Acronym Reveal — vertical stack with typing animation.
-
-  Phase 1: Letters F, A, S, T appear stacked vertically (staggered fade-in)
-  Phase 2: Each line types out the full word with a blinking cursor:
-           F → Factory
-           A → Advanced
-           S → Skills
-           T → Talent
-  Phase 3: "in AI" fades in below as the tagline
-*/
-
-const WORDS = [
-    { letter: 'F', rest: 'actory' },
-    { letter: 'A', rest: 'dvanced' },
-    { letter: 'S', rest: 'kills' },
-    { letter: 'T', rest: 'alent' },
+const FULL_TITLE = [
+    { token: 'FACTORY', id: 43444, acronym: 'F' },
+    { token: 'FOR', id: 1533, acronym: null },
+    { token: 'ADVANCED', id: 17006, acronym: 'A' },
+    { token: 'SKILLS', id: 16135, acronym: 'S' },
+    { token: 'AND', id: 703, acronym: null },
+    { token: 'TALENT', id: 3377, acronym: 'T' },
+    { token: 'in', id: 304, acronym: null, style: 'italic' },
+    { token: 'ARTIFICIAL', id: 7247, acronym: 'A', color: '#C0C0C0' },
+    { token: 'INTELLIGENCE', id: 10425, acronym: 'I', color: '#D4AF37' },
 ]
 
-const TAGLINE = 'in AI'
+const initialState = {
+    renderData: [],
+    isComplete: false,
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'UPDATE_WORD':
+            const newRenderData = [...state.renderData]
+            newRenderData[action.index] = action.text
+            return { ...state, renderData: newRenderData }
+        case 'SET_COMPLETE':
+            return { ...state, isComplete: true }
+        case 'RESET':
+            return initialState
+        default:
+            return state
+    }
+}
 
 export default function FASTReveal() {
-    // Phase 1: which letters are visible (0-4)
-    const [lettersVisible, setLettersVisible] = useState(0)
-    // Phase 2: which line is currently typing (-1 = not started, 0-3 = typing line N, 4 = done)
-    const [typingLine, setTypingLine] = useState(-1)
-    // How many chars of the "rest" are visible per line
-    const [charCounts, setCharCounts] = useState([0, 0, 0, 0])
-    // Phase 3: tagline visible
-    const [taglineVisible, setTaglineVisible] = useState(false)
-    // Cursor visible
+    const [state, dispatch] = useReducer(reducer, initialState)
     const [cursorVisible, setCursorVisible] = useState(true)
 
-    const hasAnimated = useRef(false)
-
     useEffect(() => {
-        if (hasAnimated.current) return
-        hasAnimated.current = true
+        let currentIndex = 0
+        let isAborted = false
+        const glitchChars = '0123456789!@#$%'
 
-        const timers = []
-
-        // Phase 1: Stagger letter appearances (F, A, S, T)
-        for (let i = 0; i < 4; i++) {
-            timers.push(setTimeout(() => setLettersVisible(i + 1), 150 + i * 140))
-        }
-
-        // Phase 2: Start typing after letters appear
-        const typeStartDelay = 150 + 4 * 140 + 400 // after all letters + pause
-
-        let cumulativeDelay = typeStartDelay
-
-        for (let lineIdx = 0; lineIdx < 4; lineIdx++) {
-            const word = WORDS[lineIdx]
-            const lineDelay = cumulativeDelay
-
-            // Set which line is being typed
-            timers.push(setTimeout(() => setTypingLine(lineIdx), lineDelay))
-
-            // Type each character of "rest"
-            for (let charIdx = 0; charIdx < word.rest.length; charIdx++) {
-                timers.push(setTimeout(() => {
-                    setCharCounts(prev => {
-                        const next = [...prev]
-                        next[lineIdx] = charIdx + 1
-                        return next
-                    })
-                }, lineDelay + (charIdx + 1) * 55))
+        const stream = async () => {
+            if (isAborted || currentIndex >= FULL_TITLE.length) {
+                if (!isAborted && currentIndex >= FULL_TITLE.length) dispatch({ type: 'SET_COMPLETE' })
+                return
             }
 
-            cumulativeDelay = lineDelay + word.rest.length * 55 + 200 // pause between lines
+            const targetWord = FULL_TITLE[currentIndex].token
+            let step = 0
+            
+            const animateWord = () => {
+                return new Promise((resolve) => {
+                    const interval = setInterval(() => {
+                        if (isAborted) {
+                            clearInterval(interval)
+                            resolve()
+                            return
+                        }
+
+                        // Predictive flicker logic
+                        let currentText = ''
+                        const rand = Math.random()
+                        
+                        if (step < targetWord.length * 0.5) {
+                            if (rand > 0.7) {
+                                currentText = `[${FULL_TITLE[currentIndex].id}]`
+                            } else {
+                                currentText = targetWord.split('').map((_, idx) => 
+                                    idx < Math.floor(step) ? targetWord[idx] : glitchChars[Math.floor(Math.random() * glitchChars.length)]
+                                ).join('')
+                            }
+                        } else {
+                            currentText = targetWord.split('').map((char, idx) => 
+                                idx < Math.floor(step) ? char : glitchChars[Math.floor(Math.random() * glitchChars.length)]
+                            ).join('')
+                        }
+
+                        dispatch({ type: 'UPDATE_WORD', index: currentIndex, text: currentText })
+
+                        step += 0.35
+                        if (step >= targetWord.length + 1) {
+                            clearInterval(interval)
+                            dispatch({ type: 'UPDATE_WORD', index: currentIndex, text: targetWord })
+                            resolve()
+                        }
+                    }, 30)
+                })
+            }
+
+            await animateWord()
+            if (isAborted) return
+            
+            currentIndex++
+            await new Promise(r => setTimeout(r, 60))
+            if (!isAborted) stream()
         }
 
-        // Phase 3: Show tagline after all typing
-        timers.push(setTimeout(() => {
-            setTypingLine(4) // done typing
-            setTaglineVisible(true)
-        }, cumulativeDelay + 100))
+        stream()
+        const blink = setInterval(() => setCursorVisible(v => !v), 530)
 
-        // Hide cursor after everything
-        timers.push(setTimeout(() => setCursorVisible(false), cumulativeDelay + 1200))
-
-        return () => timers.forEach(clearTimeout)
+        return () => {
+            isAborted = true
+            clearInterval(blink)
+            dispatch({ type: 'RESET' })
+        }
     }, [])
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 0, userSelect: 'none' }}>
-            {WORDS.map((w, i) => {
-                const isLetterVisible = i < lettersVisible
-                const isTyping = typingLine === i
-                const isDoneTyping = charCounts[i] === w.rest.length
-                const typedText = w.rest.slice(0, charCounts[i])
-
-                return (
-                    <div
-                        key={w.letter}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'baseline',
-                            lineHeight: 1.15,
-                            minHeight: '1.2em',
-                            position: 'relative',
-                        }}
-                    >
-                        {/* The bold first letter */}
-                        <span style={{
-                            fontFamily: 'var(--font-display)',
-                            fontWeight: 400,
-                            fontSize: 'clamp(2.8rem, 5.5vw, 4.5rem)',
-                            color: 'var(--orange)',
-                            letterSpacing: '-0.03em',
-                            opacity: isLetterVisible ? 1 : 0,
-                            transform: isLetterVisible ? 'translateY(0)' : 'translateY(8px)',
-                            transition: 'opacity 0.25s ease, transform 0.3s ease',
-                            display: 'inline-block',
-                            minWidth: 'clamp(2rem, 4vw, 3.2rem)',
-                        }}>
-                            {w.letter}
-                        </span>
-
-                        {/* The typed-out rest of the word */}
-                        <span style={{
-                            fontFamily: 'var(--font-body)',
-                            fontWeight: 300,
-                            fontSize: 'clamp(1.4rem, 2.8vw, 2.2rem)',
-                            color: 'var(--text)',
-                            letterSpacing: '-0.01em',
-                            opacity: charCounts[i] > 0 ? 1 : 0,
-                            transition: 'opacity 0.1s ease',
-                            whiteSpace: 'nowrap',
-                        }}>
-                            {typedText}
-                        </span>
-
-                        {/* Blinking cursor on current line */}
-                        {cursorVisible && (isTyping || (typingLine === -1 && i === lettersVisible - 1 && isLetterVisible)) && (
-                            <span style={{
-                                display: 'inline-block',
-                                width: 2,
-                                height: 'clamp(1.6rem, 3vw, 2.6rem)',
-                                background: 'var(--orange)',
-                                marginLeft: 3,
-                                animation: 'cursorBlink 0.53s step-end infinite',
-                                verticalAlign: 'middle',
-                                alignSelf: 'center',
-                            }} />
-                        )}
-                    </div>
-                )
-            })}
-
-            {/* "in AI" tagline */}
-            <div style={{
-                marginTop: 16,
-                opacity: taglineVisible ? 1 : 0,
-                transform: taglineVisible ? 'translateY(0)' : 'translateY(10px)',
-                transition: 'opacity 0.5s ease, transform 0.5s ease',
-                display: 'flex',
+        <div style={{ padding: '40px 0 20px', minHeight: '120px', width: '100%' }}>
+            <div style={{ 
+                display: 'flex', 
+                flexWrap: 'nowrap', 
+                gap: '0.4rem 0.6rem', 
+                maxWidth: '1200px',
+                margin: '0 auto',
+                justifyContent: 'center',
                 alignItems: 'baseline',
-                gap: 6,
+                fontFamily: 'var(--font-body)',
+                lineHeight: 1.1,
+                textAlign: 'center'
             }}>
-                <span style={{
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 300,
-                    fontSize: 'clamp(1.4rem, 2.8vw, 2.2rem)',
-                    color: 'var(--text-light)',
-                    letterSpacing: '0.01em',
-                }}>
-                    in
-                </span>
-                <span style={{
-                    fontFamily: 'var(--font-display)',
-                    fontWeight: 400,
-                    fontStyle: 'italic',
-                    fontSize: 'clamp(2.8rem, 5.5vw, 4.5rem)',
-                    color: 'var(--orange)',
-                    letterSpacing: '-0.03em',
-                }}>
-                    AI
-                </span>
+                {state.renderData.map((wordText, i) => {
+                    const t = FULL_TITLE[i]
+                    if (!t || !wordText) return null
+                    
+                    const isSettled = wordText === t.token
+                    const isAcronymWord = t.acronym && i < 6
+                    const isAI = i >= 7
+                    return (
+                        <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <span
+                                className="token-reveal"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'baseline',
+                                    fontWeight: (isAcronymWord || isAI) ? 500 : 300,
+                                    fontSize: 'clamp(0.9rem, 2.4vw, 1.6rem)',
+                                    color: (t.color || 'var(--text)'),
+                                    fontStyle: t.style === 'italic' ? 'italic' : 'normal',
+                                    fontFamily: 'var(--font-display)',
+                                    letterSpacing: '-0.02em',
+                                    transition: 'color 0.4s ease',
+                                    minHeight: '2rem'
+                                }}
+                            >
+                                {isAcronymWord && isSettled ? (
+                                    <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{wordText}</span>
+                                ) : wordText}
+                                
+                                {isAI && t.token === 'INTELLIGENCE' && isSettled && (
+                                    <span style={{
+                                        display: 'inline-block',
+                                        width: '0.4rem',
+                                        height: '0.4rem',
+                                        background: 'var(--gradient-gold)',
+                                        borderRadius: '50%',
+                                        marginLeft: '6px',
+                                        marginBottom: '0.4rem'
+                                    }} />
+                                )}
+                            </span>
+                            
+                            {!isSettled && (
+                                <span style={{ 
+                                    fontSize: '0.6rem', 
+                                    fontFamily: 'monospace', 
+                                    color: 'var(--primary)', 
+                                    opacity: 0.7,
+                                    marginTop: '-4px',
+                                    letterSpacing: '0.1em'
+                                }}>
+                                    ID:{t.id}
+                                </span>
+                            )}
+                        </div>
+                    )
+                })}
+                
+                {!state.isComplete && cursorVisible && (
+                    <span style={{
+                        width: '2px',
+                        height: '1.8rem',
+                        background: 'var(--primary)',
+                        marginLeft: '4px',
+                        alignSelf: 'flex-start',
+                        marginTop: '0.1rem',
+                        display: 'inline-block'
+                    }} />
+                )}
             </div>
 
+            {state.isComplete && (
+                <div style={{
+                    textAlign: 'center',
+                    marginTop: '1.5rem',
+                    animation: 'taglineFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                }}>
+                    <p style={{
+                        fontSize: 'clamp(0.8rem, 1.2vw, 0.95rem)',
+                        color: 'var(--text-muted)',
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                        fontWeight: 500,
+                        opacity: 0.8
+                    }}>
+                        Engineered for Depth. Optimized for Speed.
+                    </p>
+                </div>
+            )}
+            
             <style>{`
-        @keyframes cursorBlink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-      `}</style>
+                @keyframes tokenPop { 
+                    from { opacity: 0; transform: translateY(4px); } 
+                    to { opacity: 1; transform: translateY(0); } 
+                }
+                @keyframes taglineFadeIn {
+                    from { opacity: 0; transform: translateY(8px); }
+                    to { opacity: 0.8; transform: translateY(0); }
+                }
+                .token-reveal { 
+                    animation: tokenPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+                }
+            `}</style>
         </div>
     )
 }
 
-/*
-  Simple inline logo for Navbar/Footer — no animation, just styled text.
-  Hybrid: Option B weight (Fraunces 400) + Option A layout (no dot).
-*/
 export function LogoInline({ size = 'navbar' }) {
-    const fontSize = size === 'navbar' ? '1.15rem' : '1.1rem'
-
+    const fontSize = size === 'navbar' ? '1.25rem' : '1.15rem'
     return (
-        <span style={{ display: 'inline-flex', alignItems: 'baseline' }}>
-            <span style={{
-                fontFamily: 'var(--font-display)', fontWeight: 400, fontSize,
-                color: 'var(--text)', letterSpacing: '-0.02em',
-            }}>FAST</span>
-            <span style={{
-                fontFamily: 'var(--font-body)', fontWeight: 300, fontSize,
-                color: 'var(--text-light)', letterSpacing: '-0.005em',
-            }}>in</span>
-            <span style={{
-                fontFamily: 'var(--font-display)', fontWeight: 400, fontStyle: 'italic', fontSize,
-                color: 'var(--orange)', letterSpacing: '-0.02em',
-            }}>AI</span>
+        <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '0.4rem' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize, color: '#D4AF37', letterSpacing: '-0.01em' }}>FAST</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 300, fontStyle: 'italic', fontSize: `calc(${fontSize} * 0.9)`, color: '#C0C0C0' }}>in</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontStyle: 'italic', fontSize, color: '#F5F5F7', letterSpacing: '-0.01em' }}>AI.</span>
         </span>
     )
 }

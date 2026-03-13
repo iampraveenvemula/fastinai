@@ -1,0 +1,74 @@
+import { useEffect, useRef } from 'react'
+
+const topics = [
+    'Langchain & Langgraph',
+    'Language Model Fundamentals',
+    'LLMs & GenAI',
+    'Agentic AI',
+    'RAG Pipelines',
+    'Claude Tools & API Integration'
+]
+
+export default function MasterClass() {
+    const ref = useRef(null)
+    useEffect(() => {
+        const obs = new IntersectionObserver(
+            entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target) } }),
+            { threshold: 0.1 }
+        )
+        if (ref.current) obs.observe(ref.current)
+        return () => obs.disconnect()
+    }, [])
+
+    return (
+        <section id="master-class" style={{ padding: '112px 0', background: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
+            <div className="container">
+                <div ref={ref} className="reveal">
+                    <span className="label" style={{ display: 'block', marginBottom: 16 }}>Curated Expert Training</span>
+                    <h2 className="display" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', color: 'var(--text)', marginBottom: 48 }}>
+                        Master Class Series
+                    </h2>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32, marginBottom: 64 }}>
+                        {/* Slow Pace */}
+                        <div className="card-minimal" style={{ padding: 40, border: '1px solid var(--border)', borderRadius: 20 }}>
+                            <div style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: 8 }}>DEEP DIVE</div>
+                            <h3 style={{ fontSize: '1.8rem', marginBottom: 16 }}>Slow Pace</h3>
+                            <div style={{ fontSize: '2.5rem', fontWeight: 300, marginBottom: 24, color: 'var(--text)' }}>8 Hours</div>
+                            <p style={{ color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>Comprehensive walkthrough of every concept, theory, and implementation detail for the patient learner.</p>
+                            <a href="#apply" className="btn btn-outline" style={{ width: '100%', justifyContent: 'center' }}>Reserve Seat →</a>
+                        </div>
+
+                        {/* Fast Pace */}
+                        <div className="card-minimal" style={{ padding: 40, border: '1px solid var(--primary)', borderRadius: 20, position: 'relative' }}>
+                            <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: 'var(--primary)', color: '#000', fontSize: '0.7rem', fontWeight: 800, padding: '4px 12px', borderRadius: 20 }}>POPULAR</div>
+                            <div style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: 8 }}>EFFICIENT</div>
+                            <h3 style={{ fontSize: '1.8rem', marginBottom: 16 }}>Fast Pace</h3>
+                            <div style={{ fontSize: '2.5rem', fontWeight: 300, marginBottom: 24, color: 'var(--text)' }}>4 Hours</div>
+                            <p style={{ color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>Straight to the code. No fluff. Aimed at experienced engineers who need production-ready patterns fast.</p>
+                            <a href="#apply" className="btn btn-fill" style={{ width: '100%', justifyContent: 'center' }}>Reserve Seat →</a>
+                        </div>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid var(--border)', paddingTop: 48 }}>
+                        <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.1em', marginBottom: 32, textAlign: 'center' }}>CORE CURRICULUM</h4>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+                            {topics.map(t => (
+                                <span key={t} style={{ 
+                                    padding: '8px 20px', 
+                                    background: 'var(--bg-alt)', 
+                                    border: '1px solid var(--border)', 
+                                    borderRadius: 30, 
+                                    fontSize: '0.9rem', 
+                                    color: 'var(--text-body)' 
+                                }}>
+                                    {t}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}

@@ -14,7 +14,7 @@ export default function Navbar() {
     return (
         <nav style={{
             position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-            background: scrolled ? 'rgba(250,250,250,0.92)' : 'rgba(250,250,250,0.0)',
+            background: scrolled ? 'rgba(10,10,10,0.85)' : 'rgba(10,10,10,0.0)',
             borderBottom: `1px solid ${scrolled ? 'var(--border)' : 'transparent'}`,
             backdropFilter: scrolled ? 'blur(16px)' : 'none',
             WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
@@ -23,14 +23,14 @@ export default function Navbar() {
             <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
 
                 {/* Logo */}
-                <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
                     <LogoInline size="navbar" />
                 </a>
 
                 {/* Desktop nav */}
                 <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
-                    {['Academy', 'Consulting', 'Curriculum', 'Insights'].map(l => (
-                        <a key={l} href={`#${l.toLowerCase()}`} style={{
+                    {['Master Class', 'Accelerator', 'Hiring Support', 'Blog'].map(l => (
+                        <a key={l} href={`#${l.toLowerCase().replace(/ /g, '-')}`} style={{
                             fontFamily: 'var(--font-body)', color: 'var(--text-muted)',
                             fontSize: '0.875rem', fontWeight: 400, textDecoration: 'none',
                             transition: 'color 0.15s',
@@ -39,11 +39,6 @@ export default function Navbar() {
                             onMouseLeave={e => e.target.style.color = 'var(--text-muted)'}
                         >{l}</a>
                     ))}
-                </div>
-
-                <div className="hidden md:flex" style={{ alignItems: 'center', gap: 10 }}>
-                    <a href="#consulting" className="btn btn-outline" style={{ padding: '9px 20px', fontSize: '0.85rem' }}>Book Consulting</a>
-                    <a href="#academy" className="btn btn-fill" style={{ padding: '9px 20px', fontSize: '0.85rem' }}>Join Academy →</a>
                 </div>
 
                 {/* Mobile */}
@@ -56,17 +51,13 @@ export default function Navbar() {
             </div>
 
             {menuOpen && (
-                <div style={{ background: 'rgba(250,250,250,0.97)', borderTop: '1px solid var(--border)', padding: '12px 0 20px' }}>
+                <div style={{ background: 'rgba(10,10,10,0.97)', borderTop: '1px solid var(--border)', padding: '12px 0 20px' }}>
                     <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        {['Academy', 'Consulting', 'Curriculum', 'Insights'].map(l => (
-                            <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setMenuOpen(false)}
+                        {['Master Class', 'Accelerator', 'Hiring Support', 'Blog'].map(l => (
+                            <a key={l} href={`#${l.toLowerCase().replace(/ /g, '-')}`} onClick={() => setMenuOpen(false)}
                                 style={{ padding: '12px 0', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', borderBottom: '1px solid var(--border)' }}
                             >{l}</a>
                         ))}
-                        <div style={{ paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                            <a href="#academy" className="btn btn-fill" style={{ justifyContent: 'center' }}>Join Academy →</a>
-                            <a href="#consulting" className="btn btn-outline" style={{ justifyContent: 'center' }}>Book Consulting</a>
-                        </div>
                     </div>
                 </div>
             )}

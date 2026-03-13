@@ -1,16 +1,12 @@
 import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
-import TrustedBy from './components/TrustedBy'
-import DualTrack from './components/DualTrack'
-import HowItWorks from './components/HowItWorks'
-import CurriculumBento from './components/CurriculumBento'
-import ConsultingSection from './components/ConsultingSection'
-import Testimonials from './components/Testimonials'
-import FounderSection from './components/FounderSection'
-import YouTubeSection from './components/YouTubeSection'
-import BottomCTA from './components/BottomCTA'
+import MasterClass from './components/MasterClass'
+import HiringSupport from './components/HiringSupport'
+import Accelerator from './components/Accelerator'
+import Blog from './components/Blog'
 import Footer from './components/Footer'
+import FASTReveal from './components/AnimatedLogo'
 
 function useScrollReveal() {
   useEffect(() => {
@@ -26,19 +22,17 @@ function useScrollReveal() {
 export default function App() {
   useScrollReveal()
   return (
-    <div style={{ minHeight: '100vh', background: '#FFFFFF' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <Navbar />
+      <div className="container" style={{ paddingTop: '80px', marginBottom: '20px', textAlign: 'center' }}>
+        <FASTReveal />
+      </div>
       <main>
         <HeroSection />
-        <TrustedBy />
-        <DualTrack />
-        <HowItWorks />
-        <CurriculumBento />
-        <ConsultingSection />
-        <Testimonials />
-        <FounderSection />
-        <YouTubeSection />
-        <BottomCTA />
+        <MasterClass />
+        <Accelerator />
+        <HiringSupport />
+        <Blog />
       </main>
       <Footer />
     </div>

@@ -2,21 +2,24 @@
 
 /* ─── Minimal Elegant Design System ──────────────────────────── */
 :root {
-  --bg: #FFFFFF;
-  --bg-alt: #F2F2F2;
-  --surface: #FFFFFF;
-  --border: #E0E0E0;
-  --border-mid: #C0C0C0;
-  --accent: #0D7377;
-  /* FastinAI Teal — trust, info */
-  --accent-dim: rgba(13, 115, 119, 0.09);
-  --orange: #FF6914;
-  /* FastinAI Orange — action, energy */
-  --orange-dim: rgba(255, 105, 20, 0.09);
-  --text: #1A1A1A;
-  --text-body: #333333;
-  --text-muted: #666666;
-  --text-light: #999999;
+  --bg: #0A0A0A; /* Deep Onyx */
+  --bg-alt: #121212;
+  --surface: #1A1A1A;
+  --border: #2A2A2A;
+  --border-mid: #404040;
+  
+  --primary: #D4AF37; /* Metallic Gold */
+  --secondary: #C0C0C0; /* Chrome Silver */
+  --accent: #D4AF37;
+  
+  --gradient-gold: linear-gradient(135deg, #BF953F 0%, #FCF6BA 45%, #B38728 100%);
+  --gradient-silver: linear-gradient(135deg, #70706F 0%, #E9E9E7 100%);
+  
+  --text: #F5F5F7; /* Apple-style Off-White */
+  --text-body: #D1D1D6;
+  --text-muted: #8E8E93;
+  --text-light: #636366;
+  
   --font-display: 'Fraunces', 'Georgia', serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
 }
@@ -142,26 +145,27 @@ body {
 }
 
 .btn-fill {
-  background: var(--text);
-  color: #fff;
-  border: 1.5px solid var(--text);
+  background: var(--gradient-gold);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
 }
 
 .btn-fill:hover {
-  background: #333;
-  border-color: #333;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
 }
 
 .btn-outline {
   background: transparent;
-  color: var(--text);
-  border: 1.5px solid var(--border-mid);
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
 }
 
 .btn-outline:hover {
-  border-color: var(--text);
-  transform: translateY(-1px);
+  background: rgba(124, 58, 237, 0.04);
+  transform: translateY(-2px);
 }
 
 .btn-text {
@@ -318,4 +322,28 @@ body {
   .container-sm {
     padding: 0 20px;
   }
+}
+
+/* ─── Hero Pillar Buttons ────────────────────────────────────── */
+.btn-hero-pillar {
+  background: transparent;
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
+  opacity: 0.7;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-hero-pillar:hover {
+  background: var(--gradient-gold);
+  color: #000;
+  border-color: transparent;
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ─── Hero Links ────────────────────────────────────────────── */
+.hero-link:hover {
+  color: var(--primary) !important;
+  opacity: 0.8;
 }
