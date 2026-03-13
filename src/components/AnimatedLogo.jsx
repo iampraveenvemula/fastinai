@@ -111,7 +111,7 @@ export default function FASTReveal() {
         <div style={{ padding: '40px 0 20px', minHeight: '120px', width: '100%' }}>
             <div style={{ 
                 display: 'flex', 
-                flexWrap: 'nowrap', 
+                flexWrap: 'wrap', 
                 gap: '0.4rem 0.6rem', 
                 maxWidth: '1200px',
                 margin: '0 auto',
@@ -119,7 +119,8 @@ export default function FASTReveal() {
                 alignItems: 'baseline',
                 fontFamily: 'var(--font-body)',
                 lineHeight: 1.1,
-                textAlign: 'center'
+                textAlign: 'center',
+                padding: '0 20px'
             }}>
                 {state.renderData.map((wordText, i) => {
                     const t = FULL_TITLE[i]
@@ -129,20 +130,25 @@ export default function FASTReveal() {
                     const isAcronymWord = t.acronym && i < 6
                     const isAI = i >= 7
                     return (
-                        <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <div key={i} style={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            alignItems: 'center',
+                            margin: '4px 0'
+                        }}>
                             <span
                                 className="token-reveal"
                                 style={{
                                     display: 'inline-flex',
                                     alignItems: 'baseline',
                                     fontWeight: (isAcronymWord || isAI) ? 500 : 300,
-                                    fontSize: 'clamp(0.9rem, 2.4vw, 1.6rem)',
+                                    fontSize: 'clamp(0.85rem, 2vw, 1.6rem)',
                                     color: (t.color || 'var(--text)'),
                                     fontStyle: t.style === 'italic' ? 'italic' : 'normal',
                                     fontFamily: 'var(--font-display)',
                                     letterSpacing: '-0.02em',
                                     transition: 'color 0.4s ease',
-                                    minHeight: '2rem'
+                                    minHeight: '1.5rem'
                                 }}
                             >
                                 {isAcronymWord && isSettled ? (
