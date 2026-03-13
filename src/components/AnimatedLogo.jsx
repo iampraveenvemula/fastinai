@@ -109,42 +109,32 @@ export default function FASTReveal() {
 
     return (
         <div style={{ padding: '40px 0 20px', minHeight: '180px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
+
+            {/* Row 1: FACTORY FOR ADVANCED SKILLS AND TALENT */}
             <div style={{ 
                 display: 'flex', 
-                flexWrap: 'wrap', 
+                flexWrap: 'wrap',
                 gap: '0.4rem 0.6rem', 
-                maxWidth: '1200px',
-                margin: '0 auto',
                 justifyContent: 'center',
                 alignItems: 'baseline',
-                fontFamily: 'var(--font-body)',
                 lineHeight: 1.1,
-                textAlign: 'center',
-                padding: '0 20px'
             }}>
-                {state.renderData.map((wordText, i) => {
+                {state.renderData.slice(0, 6).map((wordText, i) => {
                     const t = FULL_TITLE[i]
                     if (!t || !wordText) return null
-                    
                     const isSettled = wordText === t.token
                     const isAcronymWord = t.acronym && i < 6
-                    const isAI = i >= 7
                     return (
-                        <div key={i} style={{ 
-                            display: 'flex', 
-                            flexDirection: 'column', 
-                            alignItems: 'center',
-                            margin: '4px 0'
-                        }}>
+                        <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '4px 0' }}>
                             <span
                                 className="token-reveal"
                                 style={{
                                     display: 'inline-flex',
                                     alignItems: 'baseline',
-                                    fontWeight: (isAcronymWord || isAI) ? 500 : 300,
+                                    fontWeight: isAcronymWord ? 500 : 300,
                                     fontSize: 'clamp(0.85rem, 2vw, 1.6rem)',
-                                    color: (t.color || 'var(--text)'),
-                                    fontStyle: t.style === 'italic' ? 'italic' : 'normal',
+                                    color: 'var(--text)',
                                     fontFamily: 'var(--font-display)',
                                     letterSpacing: '-0.02em',
                                     transition: 'color 0.4s ease',
@@ -154,7 +144,51 @@ export default function FASTReveal() {
                                 {isAcronymWord && isSettled ? (
                                     <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{wordText}</span>
                                 ) : wordText}
-                                
+                            </span>
+                            {!isSettled && (
+                                <span style={{ fontSize: '0.6rem', fontFamily: 'monospace', color: 'var(--primary)', opacity: 0.7, marginTop: '-4px', letterSpacing: '0.1em' }}>
+                                    ID:{t.id}
+                                </span>
+                            )}
+                        </div>
+                    )
+                })}
+            </div>
+
+            {/* Row 2: in ARTIFICIAL INTELLIGENCE */}
+            <div style={{ 
+                display: 'flex', 
+                flexWrap: 'wrap',
+                gap: '0.4rem 0.6rem', 
+                justifyContent: 'center',
+                alignItems: 'baseline',
+                lineHeight: 1.1,
+                marginTop: '0.4rem'
+            }}>
+                {state.renderData.slice(6).map((wordText, relIdx) => {
+                    const i = relIdx + 6
+                    const t = FULL_TITLE[i]
+                    if (!t || !wordText) return null
+                    const isSettled = wordText === t.token
+                    const isAI = i >= 7
+                    return (
+                        <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '4px 0' }}>
+                            <span
+                                className="token-reveal"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'baseline',
+                                    fontWeight: isAI ? 500 : 300,
+                                    fontSize: 'clamp(0.85rem, 2vw, 1.6rem)',
+                                    color: t.color || 'var(--text)',
+                                    fontStyle: t.style === 'italic' ? 'italic' : 'normal',
+                                    fontFamily: 'var(--font-display)',
+                                    letterSpacing: '-0.02em',
+                                    transition: 'color 0.4s ease',
+                                    minHeight: '1.5rem'
+                                }}
+                            >
+                                {wordText}
                                 {isAI && t.token === 'INTELLIGENCE' && isSettled && (
                                     <span style={{
                                         display: 'inline-block',
@@ -167,35 +201,28 @@ export default function FASTReveal() {
                                     }} />
                                 )}
                             </span>
-                            
                             {!isSettled && (
-                                <span style={{ 
-                                    fontSize: '0.6rem', 
-                                    fontFamily: 'monospace', 
-                                    color: 'var(--primary)', 
-                                    opacity: 0.7,
-                                    marginTop: '-4px',
-                                    letterSpacing: '0.1em'
-                                }}>
+                                <span style={{ fontSize: '0.6rem', fontFamily: 'monospace', color: 'var(--primary)', opacity: 0.7, marginTop: '-4px', letterSpacing: '0.1em' }}>
                                     ID:{t.id}
                                 </span>
                             )}
                         </div>
                     )
                 })}
-                
+
                 {!state.isComplete && cursorVisible && (
                     <span style={{
                         width: '2px',
                         height: '1.8rem',
                         background: 'var(--primary)',
                         marginLeft: '4px',
-                        alignSelf: 'flex-start',
-                        marginTop: '0.1rem',
+                        alignSelf: 'center',
                         display: 'inline-block'
                     }} />
                 )}
             </div>
+
+        </div>
 
             {state.isComplete && (
                 <div style={{
