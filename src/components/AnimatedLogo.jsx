@@ -153,6 +153,18 @@ export default function FASTReveal() {
                         </div>
                     )
                 })}
+
+                {/* Cursor in Row 1 while still animating row 1 */}
+                {!state.isComplete && cursorVisible && state.renderData.length <= 6 && (
+                    <span style={{
+                        width: '2px',
+                        height: '1.5rem',
+                        background: 'var(--primary)',
+                        marginLeft: '4px',
+                        alignSelf: 'center',
+                        display: 'inline-block'
+                    }} />
+                )}
             </div>
 
             {/* Row 2: in ARTIFICIAL INTELLIGENCE */}
@@ -210,10 +222,11 @@ export default function FASTReveal() {
                     )
                 })}
 
-                {!state.isComplete && cursorVisible && (
+                {/* Cursor in Row 2 when animating row 2 */}
+                {!state.isComplete && cursorVisible && state.renderData.length > 6 && (
                     <span style={{
                         width: '2px',
-                        height: '1.8rem',
+                        height: '1.5rem',
                         background: 'var(--primary)',
                         marginLeft: '4px',
                         alignSelf: 'center',
