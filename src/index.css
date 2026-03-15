@@ -347,44 +347,74 @@ body {
   color: var(--primary) !important;
   opacity: 0.8;
 }
-.split-layout {
-  display: flex;
-  flex-direction: column; /* Mobile: visual on top, text below */
+/* ─── Cinematic Scrollytelling Layout ───────────────────────── */
+.cinematic-layout {
   position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: var(--bg);
 }
 
-.split-visual {
+.cinematic-stage {
   position: sticky;
-  top: 64px; /* Account for navbar */
-  height: 50vh;
-  width: 100%;
-  z-index: 5;
-  border-bottom: 1px solid var(--border);
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #0a101f 0%, #030712 100%);
+  overflow: hidden;
 }
 
-.split-text {
-  width: 100%;
+.cinematic-text-flow {
+  position: relative;
   z-index: 10;
-  /* Add top padding so text doesn't immediately hide under the visual */
-  padding-top: 5vh !important; 
+  width: 100%;
+  pointer-events: none; /* Let clicks pass through if needed */
+}
+
+.scrolly-card {
+  pointer-events: auto;
+  background: rgba(10, 10, 10, 0.85); /* Dark translucent */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin: 0 auto;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
 }
 
 @media (min-width: 900px) {
-  .split-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-  }
-  
-  .split-visual {
-    position: relative; /* Let grid handle layout */
-    top: 0;
-    height: 100vh;
-    border-bottom: none;
-    order: 2; /* Move graphic to the right pane */
+  .cinematic-layout {
+    display: flex;
+    flex-direction: row-reverse; /* Visual on right, text on left */
   }
 
-  .split-text {
-    order: 1; /* Keep text on the left pane */
-    padding-top: 10vh !important;
+  .cinematic-stage {
+    width: 60vw;
+    right: 0;
+  }
+
+  .cinematic-text-flow {
+    width: 40vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+  }
+
+  .scrolly-card {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: none;
   }
 }

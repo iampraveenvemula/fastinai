@@ -86,60 +86,37 @@ const SceneBlock = ({ data, index }) => {
   });
 
   // Smooth the scroll data slightly so the SVG drawing doesn't jitter
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });
-
-  return (
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });  return (
     <section 
       ref={containerRef} 
-      className="split-layout"
-      style={{ 
-        position: 'relative',
-        zIndex: 10,
-        background: '#030712',
-        borderBottom: '1px solid rgba(255,255,255,0.05)'
-      }}
+      className="cinematic-layout"
+      style={{ minHeight: '350vh' }}
     >
       
-      {/* RIGHT PANE: THE CAMERA (Sticky Background) */}
-      {/* Moved to the top of the DOM order so it renders first on mobile */}
-      <div className="split-visual">
-        <div 
-          style={{ 
-            position: 'sticky', 
-            top: 0, 
-            height: '100%', 
-            width: '100%', 
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'radial-gradient(circle at center, #0a101f 0%, #030712 70%)',
-            overflow: 'hidden'
-          }}
-        >
-          {/* Render the SVG visual, passing it the scroll progress so it can animate its drawing */}
-          <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
-             <data.Visual progress={smoothProgress} />
-          </div>
-        </div>
+      {/* THE CAMERA (Fixed Background Stage) */}
+      <div className="cinematic-stage">
+         {/* Render the SVG visual, passing it the scroll progress so it can animate its drawing */}
+         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+            <data.Visual progress={smoothProgress} />
+         </div>
       </div>
 
-      {/* LEFT PANE: THE SCRIPT (Scrolling Foreground Text) */}
-      <div className="split-text" style={{ 
-        padding: '10vh 5%', 
+      {/* THE SCRIPT (Scrolling Foreground Text Cards) */}
+      <div className="cinematic-text-flow" style={{ 
+        paddingTop: '20vh', 
+        paddingBottom: '50vh',
         display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center',
-        paddingBottom: '20vh'
+        flexDirection: 'column',
       }}>
         
-        <div style={{ marginBottom: '10vh' }}>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#fff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px' }}>
+        <div className="scrolly-card" style={{ marginBottom: '30vh' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px' }}>
             {data.title}
           </h2>
           <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '20px', borderRadius: '2px' }} />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30vh', marginTop: '10vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '50vh' }}>
           {data.paragraphs.map((text, i) => {
             // Pick a paragraph to highlight based on scroll progress
             const numParagraphs = data.paragraphs.length;
@@ -147,14 +124,16 @@ const SceneBlock = ({ data, index }) => {
             const peakP = startP + 0.1;
             const endP = peakP + 0.15;
 
-            // Highlight opacity: 1 when active, 0.3 when inactive
-            const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0.3, 1, 0.3]);
+            // Highlight opacity: 1 when active, 0.4 when inactive
+            const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0.4, 1, 0.4]);
+            // Subtle scale effect on the active card for interactivity
+            const scale = useTransform(smoothProgress, [startP, peakP, endP], [0.95, 1.05, 0.95]);
             
             return (
-              <motion.div key={i} style={{ opacity }}>
+              <motion.div key={i} className="scrolly-card" style={{ opacity, scale }}>
                 <p style={{ 
-                  fontSize: 'clamp(1.2rem, 2vw, 1.8rem)', 
-                  color: 'var(--text-light)', 
+                  fontSize: 'clamp(1.3rem, 2.5vw, 2rem)', /* Increased font size */
+                  color: '#ffffff', /* High contrast pure white */ 
                   lineHeight: 1.6, 
                   fontWeight: 400
                 }}>
