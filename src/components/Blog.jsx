@@ -12,9 +12,9 @@ export default function Blog() {
     }, [])
 
     const posts = [
-        { title: 'The Fall of Simple RAG', date: 'Mar 10, 2026', read: '5 min' },
-        { title: 'Why your Agent is failing in production', date: 'Mar 02, 2026', read: '8 min' },
-        { title: 'Claude 4.0: Context Windows & Reasoning', date: 'Feb 24, 2026', read: '6 min' },
+        { title: 'The Complete Beginner\'s Guide to Large Language Models (LLMs)', date: 'Mar 15, 2026', read: '15 min', link: '/blog/understanding-llm-models-complete-guide' },
+        { title: 'The Fall of Simple RAG', date: 'Mar 10, 2026', read: '5 min', link: '#' },
+        { title: 'Why your Agent is failing in production', date: 'Mar 02, 2026', read: '8 min', link: '#' },
     ]
 
     return (
@@ -37,7 +37,7 @@ export default function Blog() {
                                     <span>{p.read}</span>
                                 </div>
                                 <h3 style={{ fontSize: '1.25rem', lineHeight: 1.4, color: 'var(--text)', marginBottom: 20 }}>{p.title}</h3>
-                                <a href="#" style={{ color: 'var(--text)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500 }}>Read Article →</a>
+                                <a href={p.link} style={{ color: 'var(--text)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500 }}>Read Article →</a>
                             </div>
                         ))}
                     </div>

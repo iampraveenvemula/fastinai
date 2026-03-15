@@ -1,10 +1,26 @@
 import './index.css'
 import App from './App'
+import BlogPost from './components/BlogPost'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+// Import blog post content
+import llmGuideContent from './content/blog/understanding-llm-models-complete-guide.md?raw'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/blog/understanding-llm-models-complete-guide" element={
+          <BlogPost 
+            title="The Complete Beginner's Guide to Large Language Models (LLMs)" 
+            date="March 2026" 
+            content={llmGuideContent} 
+          />
+        } />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )
