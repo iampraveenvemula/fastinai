@@ -12,9 +12,6 @@ export default function BlogPost({ title, date, content }) {
     <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
       <div style={{ padding: '40px 20px', borderBottom: '1px solid var(--border)', paddingBottom: '30px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
-        <div style={{ color: 'var(--primary)', marginBottom: '10px', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>
-          Next-Gen Training (Coming Soon)
-        </div>
         <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', lineHeight: 1.2, marginBottom: '20px', color: 'var(--text)' }}>
           {title}
         </h1>
