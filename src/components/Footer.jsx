@@ -8,7 +8,7 @@ export default function Footer() {
                     <LogoInline size="footer" />
                 </div>
                 <p style={{ color: 'var(--text-light)', fontSize: '0.85rem', fontWeight: 300 }}>
-                    © 2026 FastinAI. Factory for Advanced Skills & Talent. All rights reserved.
+                    © 2026 FastinAI. Frontier for Advanced Skills & Talent. All rights reserved.
                 </p>
             </div>
         </footer>

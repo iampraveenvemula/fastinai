@@ -1,0 +1,183 @@
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { 
+  Scene1Autocomplete, Scene2Evolution, Scene3Attention, 
+  Scene4Tokens, Scene5Context, Scene6Decision 
+} from './MovieScenes';
+
+// --- THE SCRIPT (SCROLL SECTIONS) ---
+const scriptData = [
+  {
+    id: 1,
+    title: "1. The Illusion of Thought",
+    Visual: Scene1Autocomplete,
+    paragraphs: [
+      "Language models do not think. They do not reason. They do not 'know' facts.",
+      "At their absolute core, they are statistical engines designed to do exactly one thing...",
+      "...predict the next sequence of characters based on all the characters that came before it.",
+      "The 'magic' happens because the neural networks are so impossibly large, the predictions mimic true understanding."
+    ]
+  },
+  {
+    id: 2,
+    title: "2. The Evolution",
+    Visual: Scene2Evolution,
+    paragraphs: [
+      "In the 1990s, N-Grams looked only at the last two or three words. They had the memory of a goldfish.",
+      "By 2013, we learned to turn words into pure math (Embeddings). We could suddenly calculate meaning: King - Man + Woman = Queen.",
+      "But the leap came in 2017. Google published 'Attention Is All You Need', introducing the Transformer architecture.",
+      "Instead of reading word-by-word sequentially, Transformers read the entire passage simultaneously."
+    ]
+  },
+  {
+    id: 3,
+    title: "3. Self-Attention",
+    Visual: Scene3Attention,
+    paragraphs: [
+      "A sequential model reads 'The astronaut finally boarded the rocket she...'",
+      "When it reaches 'she', it has to slowly look backwards to figure out who 'she' is.",
+      "Self-Attention evaluates every word against every other word instantly.",
+      "It mathematically binds 'she' directly to 'astronaut', understanding the entire syntactic web in a single massive parallel computation."
+    ]
+  },
+  {
+    id: 4,
+    title: "4. Tokenization",
+    Visual: Scene4Tokens,
+    paragraphs: [
+      "Despite being called 'Language' models, they cannot read words.",
+      "Text is sliced into optimal computational blocks called Tokens. 'Unbelievable' breaks into 'un', 'believ', 'able'.",
+      "One token is roughly 4 letters in English.",
+      "This is critical because API costs and computational limits are strictly based on token counts, not words."
+    ]
+  },
+  {
+    id: 5,
+    title: "5. The Context Window",
+    Visual: Scene5Context,
+    paragraphs: [
+      "The Context Window is the strict maximum number of tokens the model can hold in its working memory at one time.",
+      "GPT-3 launched with a 4,000 token limit. Today, models can hold millions.",
+      "But beware: when the context window fills up, the oldest data simply falls out of existence.",
+      "Furthermore, models suffer from 'Lost in the Middle'—they remember what you said first and last, but get blurry in the center."
+    ]
+  },
+  {
+    id: 6,
+    title: "6. Model Selection",
+    Visual: Scene6Decision,
+    paragraphs: [
+      "Do not default to the biggest, heaviest model for every task.",
+      "For massive volume, fast parsing, or simple classification, use a lightweight, cheap model (Gemini Flash, Claude Haiku).",
+      "For profound reasoning, complex math, or foundational code architecture, use heavyweights (OpenAI o1, Claude Sonnet).",
+      "Pick the right engine for the workload."
+    ]
+  }
+];
+
+// Individual Scene Container (Split View)
+const SceneBlock = ({ data, index }) => {
+  const containerRef = useRef(null);
+  
+  // Track scroll progress purely within this specific `<section>`
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Smooth the scroll data slightly so the SVG drawing doesn't jitter
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });  return (
+    <section 
+      ref={containerRef} 
+      className="scened-layout"
+      style={{ minHeight: '300vh' }}
+    >
+      
+      {/* 1. VISUAL — Full-screen sticky background (renders first so sticky works) */}
+      <div className="scened-visual">
+         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+            <data.Visual progress={smoothProgress} />
+         </div>
+      </div>
+
+      {/* 2. HEADING — sticky at top with gradient fade below it */}
+      <div className="scened-heading">
+        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
+          {data.title}
+        </h2>
+        <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '12px', borderRadius: '2px' }} />
+      </div>
+
+      {/* 3. TEXT — floats over the diagram, nearly invisible at edges, bright in center */}
+      <div className="scened-text-flow">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '70vh' }}>
+          {data.paragraphs.map((text, i) => {
+            const numParagraphs = data.paragraphs.length;
+            // Wide fade curve: enters at near-zero opacity from the diagram,
+            // peaks to full white in the reading zone, then fades back out at the top
+            const segW = 0.75 / numParagraphs;
+            const startP = 0.1 + (i * segW);
+            const peakStart = startP + segW * 0.15;
+            const peakEnd   = startP + segW * 0.6;
+            const endP      = startP + segW * 0.85;
+
+            const opacity = useTransform(
+              smoothProgress,
+              [startP, peakStart, peakEnd, endP],
+              [0.05, 1, 1, 0.05]  // near-zero at entry and exit, full white in center
+            );
+
+            return (
+              <motion.div key={i} style={{ opacity }}>
+                <p style={{ 
+                  fontSize: 'clamp(1.25rem, 2.5vw, 1.9rem)', 
+                  color: '#ffffff',
+                  lineHeight: 1.7,
+                  fontWeight: 400
+                }}>
+                  {text}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+    </section>
+  );
+};
+
+export default function LLMMovie() {
+  return (
+    <div style={{ background: '#030712', width: '100%', marginLeft: 'calc(-50vw + 50%)' }}>
+      
+      {/* Cinematic Intro Header */}
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 20px' }}>
+         <div style={{ fontSize: '0.9rem', color: 'var(--primary)', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '20px' }}>An Interactive Documentary</div>
+         <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontFamily: 'Fraunces, serif', color: '#fff', fontWeight: 300, lineHeight: 1.1, marginBottom: '20px' }}>Inside the <span style={{ color: 'var(--primary)' }}>Machine</span></h1>
+         <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto' }}>Scroll to explore the architecture of Large Language Models.</p>
+         
+         <motion.div 
+           animate={{ y: [0, 10, 0] }} 
+           transition={{ repeat: Infinity, duration: 2 }}
+           style={{ marginTop: '80px', color: 'var(--text-muted)', fontSize: '0.9rem' }}
+         >
+           ↓ SCROLL DOWN
+         </motion.div>
+      </div>
+
+      {/* Render all Scenes in a continuous vertical flow */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {scriptData.map((data, index) => (
+          <SceneBlock key={data.id} data={data} index={index} />
+        ))}
+      </div>
+      
+      {/* End Credits Spacer */}
+      <div style={{ height: '50vh', background: '#030712', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+         <h2 style={{ fontFamily: 'Fraunces, serif', color: 'var(--text-muted)', fontWeight: 300 }}>End of Sequence</h2>
+      </div>
+
+    </div>
+  );
+}
