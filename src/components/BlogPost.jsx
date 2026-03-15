@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import LLMFlashcards from './LLMFlashcards';
+import LLMStories from './LLMStories';
 
 export default function BlogPost({ title, date, content }) {
   useEffect(() => {
@@ -26,8 +26,10 @@ export default function BlogPost({ title, date, content }) {
             </div>
           </div>
 
-          {/* Render the new interactive Flashcards component instead of the markdown wall of text */}
-          <LLMFlashcards />
+          {/* Render the new interactive Stories component instead of the markdown wall of text */}
+          <div style={{ padding: '20px 0', background: 'radial-gradient(circle at center, var(--bg-alt) 0%, var(--bg) 100%)', borderRadius: '32px', border: '1px solid var(--border)' }}>
+             <LLMStories />
+          </div>
 
           {/* Fallback link to full text if they really want it */}
           <div style={{ marginTop: '80px', paddingTop: '40px', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
