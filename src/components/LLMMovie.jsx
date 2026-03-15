@@ -93,7 +93,14 @@ const SceneBlock = ({ data, index }) => {
       style={{ minHeight: '300vh' }}
     >
       
-      {/* 1. HEADING — frozen at top */}
+      {/* 1. VISUAL — Full-screen sticky background (renders first so sticky works) */}
+      <div className="scened-visual">
+         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+            <data.Visual progress={smoothProgress} />
+         </div>
+      </div>
+
+      {/* 2. HEADING — sticky at top with gradient fade below it */}
       <div className="scened-heading">
         <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
           {data.title}
@@ -101,24 +108,31 @@ const SceneBlock = ({ data, index }) => {
         <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '12px', borderRadius: '2px' }} />
       </div>
 
-      {/* 2. TEXT — scrolls freely through the center reading zone */}
+      {/* 3. TEXT — floats over the diagram, nearly invisible at edges, bright in center */}
       <div className="scened-text-flow">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '60vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '70vh' }}>
           {data.paragraphs.map((text, i) => {
             const numParagraphs = data.paragraphs.length;
-            // Give each paragraph a wide window — text stays bright for most of its scroll range
-            const startP = 0.1 + (i * (0.7 / numParagraphs));
-            const peakP = startP + 0.12;
-            const endP = startP + 0.2;
+            // Wide fade curve: enters at near-zero opacity from the diagram,
+            // peaks to full white in the reading zone, then fades back out at the top
+            const segW = 0.75 / numParagraphs;
+            const startP = 0.1 + (i * segW);
+            const peakStart = startP + segW * 0.15;
+            const peakEnd   = startP + segW * 0.6;
+            const endP      = startP + segW * 0.85;
 
-            const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0, 1, 0]);
-            
+            const opacity = useTransform(
+              smoothProgress,
+              [startP, peakStart, peakEnd, endP],
+              [0.05, 1, 1, 0.05]  // near-zero at entry and exit, full white in center
+            );
+
             return (
               <motion.div key={i} style={{ opacity }}>
                 <p style={{ 
-                  fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', 
+                  fontSize: 'clamp(1.25rem, 2.5vw, 1.9rem)', 
                   color: '#ffffff',
-                  lineHeight: 1.7, 
+                  lineHeight: 1.7,
                   fontWeight: 400
                 }}>
                   {text}
@@ -127,13 +141,6 @@ const SceneBlock = ({ data, index }) => {
             );
           })}
         </div>
-      </div>
-
-      {/* 3. VISUAL — pinned to bottom, masks text from below */}
-      <div className="scened-visual">
-         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
-            <data.Visual progress={smoothProgress} />
-         </div>
       </div>
 
     </section>
