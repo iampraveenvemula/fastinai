@@ -117,22 +117,20 @@ export const MonkeyActor = ({ status }) => {
       {(status === 'smart' || status === 'idle' || status === 'laser') && <path d="M -10 12 Q 0 22 10 12" stroke="#fff" strokeWidth="2" fill="none" />}
       {status === 'typing' && <line x1="-10" y1="15" x2="10" y2="15" stroke="#fff" strokeWidth="2" />}
 
-      {/* 8 Arms Mutation */}
-      <AnimatePresence>
-        {status === 'mutate' && (
-          <motion.g 
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ type: "spring" }}
-          >
-            {[...Array(8)].map((_, i) => (
-              <path key={`arm-${i}`} d={`M 0 0 C 0 -100 ${Math.cos(i * 45 * Math.PI / 180) * 200} ${Math.sin(i * 45 * Math.PI / 180) * 200 - 100} ${Math.cos(i * 45 * Math.PI / 180) * 250} ${Math.sin(i * 45 * Math.PI / 180) * 250 - 50}`} 
-                stroke="#FACC15" strokeWidth="4" fill="none" filter="url(#neon-glow)" />
-            ))}
-          </motion.g>
-        )}
-      </AnimatePresence>
+      {/* 8 Arms Mutation (Always mounted, opacity controlled) */}
+      <motion.g 
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ 
+          opacity: status === 'mutate' ? 1 : 0, 
+          scale: status === 'mutate' ? 1 : 0 
+        }}
+        transition={{ type: "spring" }}
+      >
+        {[...Array(8)].map((_, i) => (
+          <path key={`arm-${i}`} d={`M 0 0 C 0 -100 ${Math.cos(i * 45 * Math.PI / 180) * 200} ${Math.sin(i * 45 * Math.PI / 180) * 200 - 100} ${Math.cos(i * 45 * Math.PI / 180) * 250} ${Math.sin(i * 45 * Math.PI / 180) * 250 - 50}`} 
+            stroke="#FACC15" strokeWidth="4" fill="none" filter="url(#neon-glow)" />
+        ))}
+      </motion.g>
     </motion.g>
   );
 };

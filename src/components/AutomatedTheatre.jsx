@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { techTheme, Defs, MonkeyActor } from './MonkeyCharacters';
 
 // --- THE TIMELINE SCRIPT ---
@@ -103,29 +103,33 @@ export default function AutomatedTheatre() {
            <g transform="translate(400, 300)">
               <MonkeyActor status={monkeyStatus} />
               
-              {/* Contextual Props based on status */}
-              <AnimatePresence>
-                {monkeyStatus === 'panic' && (
-                  <motion.g initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ type: "spring" }}>
-                    <rect x="60" y="-120" width="120" height="40" rx="4" fill="var(--surface)" stroke="#EF4444" filter="url(#red-glow)" />
-                    <text x="120" y="-95" textAnchor="middle" fontSize="20" fill="#fff" fontWeight="bold">BANANA!</text>
-                  </motion.g>
-                )}
-                
-                {monkeyStatus === 'smart' && (
-                  <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <text x="0" y="-120" textAnchor="middle" fontSize="24" fill="var(--primary)" filter="url(#neon-glow)">King - Man + Woman = Queen</text>
-                  </motion.g>
-                )}
-                
-                {monkeyStatus === 'laser' && (
-                  <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <text x="0" y="-120" textAnchor="middle" fontSize="32" fill="#fff" letterSpacing="4">un believ able</text>
-                    <motion.line x1="-40" y1="-50" x2="-40" y2="-150" stroke="#EF4444" strokeWidth="4" filter="url(#red-glow)" 
-                      animate={{ x1: [-40, -40, 40, 40], x2: [-40, -40, 40, 40] }} transition={{ duration: 1, repeat: Infinity }} />
-                  </motion.g>
-                )}
-              </AnimatePresence>
+              {/* Contextual Props based on status (Always mounted, controlled by opacity) */}
+              
+              <motion.g 
+                initial={{ opacity: 0, y: 50 }} 
+                animate={{ opacity: monkeyStatus === 'panic' ? 1 : 0, y: monkeyStatus === 'panic' ? 0 : 50 }} 
+                transition={{ type: "spring" }}
+              >
+                <rect x="60" y="-120" width="120" height="40" rx="4" fill="var(--surface)" stroke="#EF4444" filter="url(#red-glow)" />
+                <text x="120" y="-95" textAnchor="middle" fontSize="20" fill="#fff" fontWeight="bold">BANANA!</text>
+              </motion.g>
+              
+              <motion.g 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: monkeyStatus === 'smart' ? 1 : 0 }}
+              >
+                <text x="0" y="-120" textAnchor="middle" fontSize="24" fill="var(--primary)" filter="url(#neon-glow)">King - Man + Woman = Queen</text>
+              </motion.g>
+              
+              <motion.g 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: monkeyStatus === 'laser' ? 1 : 0 }}
+              >
+                <text x="0" y="-120" textAnchor="middle" fontSize="32" fill="#fff" letterSpacing="4">un believ able</text>
+                <motion.line x1="-40" y1="-50" x2="-40" y2="-150" stroke="#EF4444" strokeWidth="4" filter="url(#red-glow)" 
+                  animate={monkeyStatus === 'laser' ? { x1: [-40, -40, 40, 40], x2: [-40, -40, 40, 40] } : {}} 
+                  transition={{ duration: 1, repeat: Infinity }} />
+              </motion.g>
            </g>
          </svg>
       </div>
