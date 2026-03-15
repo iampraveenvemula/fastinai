@@ -127,7 +127,7 @@ export const MonkeyActor = ({ status }) => {
             transition={{ type: "spring" }}
           >
             {[...Array(8)].map((_, i) => (
-              <path key={i} d={`M 0 0 C 0 -100 ${Math.cos(i * 45 * Math.PI / 180) * 200} ${Math.sin(i * 45 * Math.PI / 180) * 200 - 100} ${Math.cos(i * 45 * Math.PI / 180) * 250} ${Math.sin(i * 45 * Math.PI / 180) * 250 - 50}`} 
+              <path key={`arm-${i}`} d={`M 0 0 C 0 -100 ${Math.cos(i * 45 * Math.PI / 180) * 200} ${Math.sin(i * 45 * Math.PI / 180) * 200 - 100} ${Math.cos(i * 45 * Math.PI / 180) * 250} ${Math.sin(i * 45 * Math.PI / 180) * 250 - 50}`} 
                 stroke="#FACC15" strokeWidth="4" fill="none" filter="url(#neon-glow)" />
             ))}
           </motion.g>
