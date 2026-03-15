@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import AutomatedTheatre from './AutomatedTheatre';
+import LLMMovie from './LLMMovie';
 
 export default function BlogPost({ title, date, content }) {
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function BlogPost({ title, date, content }) {
         </div>
       </div>
 
-      <AutomatedTheatre />
+      <LLMMovie />
 
       <Footer />
     </div>

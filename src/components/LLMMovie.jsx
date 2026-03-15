@@ -2,68 +2,75 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { 
   Scene1Autocomplete, Scene2Evolution, Scene3Attention, 
-  Scene4Tokens, Scene5Context 
+  Scene4Tokens, Scene5Context, Scene6Decision 
 } from './MovieScenes';
 
 // --- THE SCRIPT (SCROLL SECTIONS) ---
 const scriptData = [
   {
     id: 1,
-    title: "1. The Oblivious Monkey",
+    title: "1. The Illusion of Thought",
     Visual: Scene1Autocomplete,
     paragraphs: [
-      "Let's imagine our AI is just a very fast monkey sitting at a typewriter in a windowless room.",
-      "We hand the monkey a piece of paper that says: 'The weather is...'",
-      "Because the monkey has the memory of a goldfish (an early N-Gram model), it only looks at the very last word: 'is'.",
-      "It panics, realizes 'is' is often followed by a noun, and confidently yells: 'BANANA!'",
-      "We hit the buzzer. Wrong. Without context, the monkey is just wildly guessing."
+      "Language models do not think. They do not reason. They do not 'know' facts.",
+      "At their absolute core, they are statistical engines designed to do exactly one thing...",
+      "...predict the next sequence of characters based on all the characters that came before it.",
+      "The 'magic' happens because the neural networks are so impossibly large, the predictions mimic true understanding."
     ]
   },
   {
     id: 2,
-    title: "2. The Monkey Gets Glasses",
+    title: "2. The Evolution",
     Visual: Scene2Evolution,
     paragraphs: [
-      "By 2013, we realized the monkey needed to understand meaning, not just memorize words.",
-      "We gave the monkey a pair of glowing, mathematical glasses (Embeddings).",
-      "Suddenly, words aren't just letters—they are coordinates in a massive geometric space.",
-      "We hand the monkey the equation: 'King' minus 'Man' plus 'Woman'.",
-      "The monkey runs the math, scratches its head, and holds up a sign: 'Queen'. The monkey is starting to see the invisible threads connecting ideas."
+      "In the 1990s, N-Grams looked only at the last two or three words. They had the memory of a goldfish.",
+      "By 2013, we learned to turn words into pure math (Embeddings). We could suddenly calculate meaning: King - Man + Woman = Queen.",
+      "But the leap came in 2017. Google published 'Attention Is All You Need', introducing the Transformer architecture.",
+      "Instead of reading word-by-word sequentially, Transformers read the entire passage simultaneously."
     ]
   },
   {
     id: 3,
-    title: "3. The 8-Armed Monkey",
+    title: "3. Self-Attention",
     Visual: Scene3Attention,
     paragraphs: [
-      "But there was a new problem. If we gave the monkey a long paragraph, it read left-to-right, getting bored and forgetting the beginning by the time it reached the end.",
-      "Then came the 2017 breakthrough: 'Attention'.",
-      "The monkey mutated. It sprouted 8 glowing neon arms.",
-      "Instead of reading sequentially, the monkey now slams all 8 hands onto the paper simultaneously, grabbing every single word at the exact same time.",
-      "It instantly draws glowing strings linking 'she' directly back to 'astronaut' on the first line. Multi-dimensional understanding in a single bound."
+      "A sequential model reads 'The astronaut finally boarded the rocket she...'",
+      "When it reaches 'she', it has to slowly look backwards to figure out who 'she' is.",
+      "Self-Attention evaluates every word against every other word instantly.",
+      "It mathematically binds 'she' directly to 'astronaut', understanding the entire syntactic web in a single massive parallel computation."
     ]
   },
   {
     id: 4,
-    title: "4. The Monkey Chops Words",
+    title: "4. Tokenization",
     Visual: Scene4Tokens,
     paragraphs: [
-      "Despite all this power, the monkey secretly cannot read English words.",
-      "When we hand it the word 'Unbelievable', the monkey pulls out a laser cutter and chops it into distinct computational pieces: 'un', 'believ', 'able'.",
-      "We call these pieces 'Tokens'.",
-      "This is critical because when you pay for AI, or when the AI hits its brain capacity, it's counting these chopped-up Tokens, not your human words."
+      "Despite being called 'Language' models, they cannot read words.",
+      "Text is sliced into optimal computational blocks called Tokens. 'Unbelievable' breaks into 'un', 'believ', 'able'.",
+      "One token is roughly 4 letters in English.",
+      "This is critical because API costs and computational limits are strictly based on token counts, not words."
     ]
   },
   {
     id: 5,
-    title: "5. The Tiny Desk",
+    title: "5. The Context Window",
     Visual: Scene5Context,
     paragraphs: [
-      "Which brings us to the monkey's biggest limitation: its tiny desk.",
-      "This desk is the 'Context Window'. It represents the absolute maximum number of Tokens the monkey can keep in front of it at one time.",
-      "As you keep talking, the monkey keeps placing new tokens on the right side of the desk.",
-      "Eventually, the desk fills up. As the monkey shoves one more token onto the right side... a token on the far left gets pushed off the edge onto the floor.",
-      "The monkey didn't choose to forget your early instructions. They literally fell out of its reality."
+      "The Context Window is the strict maximum number of tokens the model can hold in its working memory at one time.",
+      "GPT-3 launched with a 4,000 token limit. Today, models can hold millions.",
+      "But beware: when the context window fills up, the oldest data simply falls out of existence.",
+      "Furthermore, models suffer from 'Lost in the Middle'—they remember what you said first and last, but get blurry in the center."
+    ]
+  },
+  {
+    id: 6,
+    title: "6. Model Selection",
+    Visual: Scene6Decision,
+    paragraphs: [
+      "Do not default to the biggest, heaviest model for every task.",
+      "For massive volume, fast parsing, or simple classification, use a lightweight, cheap model (Gemini Flash, Claude Haiku).",
+      "For profound reasoning, complex math, or foundational code architecture, use heavyweights (OpenAI o1, Claude Sonnet).",
+      "Pick the right engine for the workload."
     ]
   }
 ];
@@ -93,9 +100,31 @@ const SceneBlock = ({ data, index }) => {
       }}
     >
       
+      {/* RIGHT PANE: THE CAMERA (Sticky Background) */}
+      {/* Moved to the top of the DOM order so it renders first on mobile */}
+      <div className="split-visual">
+        <div 
+          style={{ 
+            position: 'sticky', 
+            top: 0, 
+            height: '100%', 
+            width: '100%', 
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'radial-gradient(circle at center, #0a101f 0%, #030712 70%)',
+            overflow: 'hidden'
+          }}
+        >
+          {/* Render the SVG visual, passing it the scroll progress so it can animate its drawing */}
+          <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+             <data.Visual progress={smoothProgress} />
+          </div>
+        </div>
+      </div>
+
       {/* LEFT PANE: THE SCRIPT (Scrolling Foreground Text) */}
-      {/* On mobile, this will sit naturally underneath the sticky top pane */}
-      <div style={{ 
+      <div className="split-text" style={{ 
         padding: '10vh 5%', 
         display: 'flex', 
         flexDirection: 'column', 
@@ -103,18 +132,16 @@ const SceneBlock = ({ data, index }) => {
         paddingBottom: '20vh'
       }}>
         
-        <div style={{ position: 'sticky', top: '20vh', marginBottom: '10vh' }}>
+        <div style={{ marginBottom: '10vh' }}>
           <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#fff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px' }}>
             {data.title}
           </h2>
           <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '20px', borderRadius: '2px' }} />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '30vh', marginTop: '30vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '30vh', marginTop: '10vh' }}>
           {data.paragraphs.map((text, i) => {
-            // Because this pane scrolls naturally, we don't need complex Y translations.
-            // We just use scroll progress to selectively highlight the paragraph that
-            // should currently be being read.
+            // Pick a paragraph to highlight based on scroll progress
             const numParagraphs = data.paragraphs.length;
             const startP = 0.2 + (i * (0.6 / numParagraphs));
             const peakP = startP + 0.1;
@@ -139,36 +166,13 @@ const SceneBlock = ({ data, index }) => {
         </div>
       </div>
 
-      {/* RIGHT PANE: THE CAMERA (Sticky Background) */}
-      {/* On mobile, this takes the top 50vh of the screen and sticks while the text scrolls below it */}
-      <div>
-        <div 
-          style={{ 
-            position: 'sticky', 
-            top: 0, 
-            height: '100vh', 
-            width: '100%', 
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'radial-gradient(circle at center, #0a101f 0%, #030712 70%)',
-            overflow: 'hidden'
-          }}
-        >
-          {/* Render the SVG visual, passing it the scroll progress so it can animate its drawing */}
-          <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
-             <data.Visual progress={smoothProgress} />
-          </div>
-        </div>
-      </div>
-
     </section>
   );
 };
 
 export default function LLMMovie() {
   return (
-    <div style={{ background: '#030712', width: '100%', marginLeft: 'calc(-50vw + 50%)', width: '100vw' }}>
+    <div style={{ background: '#030712', width: '100%', marginLeft: 'calc(-50vw + 50%)' }}>
       
       {/* Cinematic Intro Header */}
       <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 20px' }}>
