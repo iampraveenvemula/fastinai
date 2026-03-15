@@ -89,33 +89,27 @@ const SceneBlock = ({ data, index }) => {
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });  return (
     <section 
       ref={containerRef} 
-      className="cinematic-layout"
-      style={{ minHeight: '350vh' }}
+      className="scened-layout"
+      style={{ minHeight: '300vh' }}
     >
       
-      {/* THE CAMERA (Fixed Background Stage) */}
-      <div className="cinematic-stage">
-         {/* Render the SVG visual, passing it the scroll progress so it can animate its drawing */}
+      {/* 1. THE CAMERA (Top 45% Mobile SVG) */}
+      <div className="scened-visual">
          <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
             <data.Visual progress={smoothProgress} />
          </div>
       </div>
 
-      {/* THE SCRIPT (Scrolling Foreground Text Cards) */}
-      <div className="cinematic-text-flow" style={{ 
-        paddingTop: '20vh', 
-        paddingBottom: '50vh',
-        display: 'flex', 
-        flexDirection: 'column',
-      }}>
-        
-        <div className="scrolly-card" style={{ marginBottom: '30vh' }}>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px' }}>
-            {data.title}
-          </h2>
-          <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '20px', borderRadius: '2px' }} />
-        </div>
+      {/* 2. THE FROZEN MASK (Solid Sticky Heading Below Visual) */}
+      <div className="scened-heading">
+        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px' }}>
+          {data.title}
+        </h2>
+        <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '16px', borderRadius: '2px' }} />
+      </div>
 
+      {/* 3. THE SCRIPT (Scrolls Upwards Underneath the Frozen Mask) */}
+      <div className="scened-text-flow">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '50vh' }}>
           {data.paragraphs.map((text, i) => {
             // Pick a paragraph to highlight based on scroll progress
@@ -124,16 +118,14 @@ const SceneBlock = ({ data, index }) => {
             const peakP = startP + 0.1;
             const endP = peakP + 0.15;
 
-            // Highlight opacity: 1 when active, 0.4 when inactive
-            const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0.4, 1, 0.4]);
-            // Subtle scale effect on the active card for interactivity
-            const scale = useTransform(smoothProgress, [startP, peakP, endP], [0.95, 1.05, 0.95]);
+            // Opacity fades to 0 smoothly before it hits the masking line
+            const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0, 1, 0]);
             
             return (
-              <motion.div key={i} className="scrolly-card" style={{ opacity, scale }}>
+              <motion.div key={i} style={{ opacity }}>
                 <p style={{ 
-                  fontSize: 'clamp(1.3rem, 2.5vw, 2rem)', /* Increased font size */
-                  color: '#ffffff', /* High contrast pure white */ 
+                  fontSize: 'clamp(1.3rem, 2.5vw, 2rem)', 
+                  color: '#ffffff', // High contrast pure white 
                   lineHeight: 1.6, 
                   fontWeight: 400
                 }}>
