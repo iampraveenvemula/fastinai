@@ -93,19 +93,19 @@ const SceneBlock = ({ data, index }) => {
       style={{ minHeight: '300vh' }}
     >
       
-      {/* 1. THE CAMERA (Top 45% Mobile SVG) */}
+      {/* 1. THE FROZEN MASK (Solid Sticky Heading, TOP) */}
+      <div className="scened-heading">
+        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3.5rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
+          {data.title}
+        </h2>
+        <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '12px', borderRadius: '2px' }} />
+      </div>
+
+      {/* 2. THE CAMERA (Diagram BELOW Heading on Mobile) */}
       <div className="scened-visual">
          <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
             <data.Visual progress={smoothProgress} />
          </div>
-      </div>
-
-      {/* 2. THE FROZEN MASK (Solid Sticky Heading Below Visual) */}
-      <div className="scened-heading">
-        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px' }}>
-          {data.title}
-        </h2>
-        <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '16px', borderRadius: '2px' }} />
       </div>
 
       {/* 3. THE SCRIPT (Scrolls Upwards Underneath the Frozen Mask) */}
