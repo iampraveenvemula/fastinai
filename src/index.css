@@ -347,3 +347,15 @@ body {
   color: var(--primary) !important;
   opacity: 0.8;
 }
+.split-layout {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+@media (min-width: 900px) {
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+  }
+}
+

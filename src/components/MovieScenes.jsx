@@ -38,9 +38,9 @@ export const Scene1Autocomplete = ({ progress }) => {
   const branchOpacity = useTransform(progress, [0.6, 0.8], [0, 1]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme}>
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
-      <g transform="translate(400, 300)">
+      <g transform="translate(450, 300)">
          {/* Central Node */}
          <circle cx="0" cy="0" r="40" fill="var(--bg-alt)" stroke="var(--border)" strokeWidth="1" />
          
@@ -82,9 +82,9 @@ export const Scene2Evolution = ({ progress }) => {
   const explosionOpacity = useTransform(progress, [0.65, 0.8, 0.9], [0, 1, 0]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme}>
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
-      <g transform="translate(100, 300)">
+      <g transform="translate(150, 300)">
         
         {/* Main Timeline Data Stream */}
         <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="var(--text-muted)" strokeWidth="1" />
@@ -127,9 +127,9 @@ export const Scene3Attention = ({ progress }) => {
   const highlightOpacity = useTransform(progress, [0.5, 0.7], [0, 1]);
   
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme}>
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
-      <g transform="translate(400, 300)">
+      <g transform="translate(450, 300)">
         
         {/* Sentence Grid Layout */}
         <text x="-250" y="-50" fontSize="24" fill="var(--text-muted)">The</text>
@@ -180,9 +180,9 @@ export const Scene4Tokens = ({ progress }) => {
   const tokenOpacity = useTransform(progress, [0.5, 0.7], [0, 1]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme}>
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
-      <g transform="translate(400, 300)">
+      <g transform="translate(450, 300)">
         
         {/* Core Word */}
         <text x="0" y="0" textAnchor="middle" fontSize="48" fill="#fff" fontWeight="bold" letterSpacing="4">
@@ -231,9 +231,9 @@ export const Scene5Context = ({ progress }) => {
   const slideLeft = useTransform(progress, [0.6, 0.8], [0, -60]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme}>
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
-      <g transform="translate(400, 300)">
+      <g transform="translate(450, 300)">
         
         {/* Working Memory Array (The Desk) */}
         <rect x="-160" y="40" width="320" height="20" fill="var(--bg-alt)" stroke="var(--border)" />
@@ -271,9 +271,9 @@ export const Scene6Decision = ({ progress }) => {
   const node3Op = useTransform(progress, [0.6, 0.7], [0, 1]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme}>
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
-      <g transform="translate(400, 150)">
+      <g transform="translate(450, 200)">
         
         {/* Root Node: The Task */}
         <rect x="-60" y="-20" width="120" height="40" rx="4" fill="var(--bg-alt)" stroke="#fff" filter="url(#neon-glow)" />

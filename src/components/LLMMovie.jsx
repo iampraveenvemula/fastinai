@@ -75,7 +75,7 @@ const scriptData = [
   }
 ];
 
-// Individual Scene Container
+// Individual Scene Container (Split View)
 const SceneBlock = ({ data, index }) => {
   const containerRef = useRef(null);
   
@@ -88,88 +88,55 @@ const SceneBlock = ({ data, index }) => {
   // Smooth the scroll data slightly so the SVG drawing doesn't jitter
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });
 
-  // Map paragraphs to appear sequentially as you scroll
-  const numParagraphs = data.paragraphs.length;
-
   return (
     <section 
       ref={containerRef} 
+      className="split-layout"
       style={{ 
-        height: '300vh', // Each scene requires 3 screens worth of scrolling
         position: 'relative',
-        zIndex: 10 
+        zIndex: 10,
+        background: '#030712',
+        borderBottom: '1px solid rgba(255,255,255,0.05)'
       }}
     >
-      {/* THE CAMERA (Sticky Background) */}
-      <div 
-        style={{ 
-          position: 'sticky', 
-          top: 0, 
-          height: '100vh', 
-          width: '100vw', 
-          marginLeft: 'calc(-50vw + 50%)', // Break out of main container width
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#030712' // Extremely dark baseline
-        }}
-      >
-        {/* Render the SVG visual, passing it the scroll progress so it can animate its drawing */}
-        <div style={{ width: '100%', maxWidth: '1200px', height: '100%', position: 'absolute', opacity: 0.8 }}>
-           <data.Visual progress={smoothProgress} />
-        </div>
-        
-        {/* Vignette overlay effectively fading edges to black */}
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, transparent 0%, #030712 100%)', pointerEvents: 'none' }} />
-      </div>
-
-      {/* THE SCRIPT (Scrolling Foreground Text) */}
+      
+      {/* LEFT PANE: THE SCRIPT (Scrolling Foreground Text) */}
+      {/* On mobile, this will sit naturally underneath the sticky top pane */}
       <div style={{ 
-        position: 'absolute', // Absolute relative to the 300vh section container
-        top: 0, left: 0, right: 0, height: '100%', 
-        display: 'flex', flexDirection: 'column', 
-        paddingLeft: '5%', paddingRight: '5%',
-        paddingTop: '50vh', // Start text halfway down first screen
-        paddingBottom: '50vh'
+        padding: '10vh 5%', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        justifyContent: 'center',
+        paddingBottom: '20vh'
       }}>
         
-        {/* Title stays pinned a bit longer */}
-        <div style={{ height: '30vh', display: 'flex', alignItems: 'center' }}>
-          <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', color: '#fff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}>
+        <div style={{ position: 'sticky', top: '20vh', marginBottom: '10vh' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', color: '#fff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px' }}>
             {data.title}
           </h2>
+          <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '20px', borderRadius: '2px' }} />
         </div>
 
-        {/* Space out paragraphs over the total height */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '30vh', paddingBottom: '30vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '30vh', marginTop: '30vh' }}>
           {data.paragraphs.map((text, i) => {
-            
-            // Calculate when this specific paragraph should fade in based on total section scroll progress
-            // Paragraph 0 should peak at progress ~ 0.3
-            // Paragraph last should peak at progress ~ 0.8
+            // Because this pane scrolls naturally, we don't need complex Y translations.
+            // We just use scroll progress to selectively highlight the paragraph that
+            // should currently be being read.
+            const numParagraphs = data.paragraphs.length;
             const startP = 0.2 + (i * (0.6 / numParagraphs));
             const peakP = startP + 0.1;
-            const endP = peakP + 0.1;
+            const endP = peakP + 0.15;
 
-            const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0, 1, 0]);
-            const y = useTransform(smoothProgress, [startP, peakP, endP], [100, 0, -100]);
-
+            // Highlight opacity: 1 when active, 0.3 when inactive
+            const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0.3, 1, 0.3]);
+            
             return (
-              <motion.div 
-                key={i} 
-                style={{ opacity, y, maxWidth: '600px' }}
-              >
+              <motion.div key={i} style={{ opacity }}>
                 <p style={{ 
-                  fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', 
+                  fontSize: 'clamp(1.2rem, 2vw, 1.8rem)', 
                   color: 'var(--text-light)', 
-                  lineHeight: 1.4, 
-                  background: 'rgba(3, 7, 18, 0.4)', 
-                  backdropFilter: 'blur(10px)', 
-                  padding: '24px 32px', 
-                  borderRadius: '16px',
-                  borderLeft: '2px solid var(--primary)',
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+                  lineHeight: 1.6, 
+                  fontWeight: 400
                 }}>
                   {text}
                 </p>
@@ -177,15 +144,38 @@ const SceneBlock = ({ data, index }) => {
             );
           })}
         </div>
-
       </div>
+
+      {/* RIGHT PANE: THE CAMERA (Sticky Background) */}
+      {/* On mobile, this takes the top 50vh of the screen and sticks while the text scrolls below it */}
+      <div>
+        <div 
+          style={{ 
+            position: 'sticky', 
+            top: 0, 
+            height: '100vh', 
+            width: '100%', 
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'radial-gradient(circle at center, #0a101f 0%, #030712 70%)',
+            overflow: 'hidden'
+          }}
+        >
+          {/* Render the SVG visual, passing it the scroll progress so it can animate its drawing */}
+          <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+             <data.Visual progress={smoothProgress} />
+          </div>
+        </div>
+      </div>
+
     </section>
   );
 };
 
 export default function LLMMovie() {
   return (
-    <div style={{ background: '#030712', minHeight: '100vh', width: '100%' }}>
+    <div style={{ background: '#030712', width: '100%', marginLeft: 'calc(-50vw + 50%)', width: '100vw' }}>
       
       {/* Cinematic Intro Header */}
       <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 20px' }}>
@@ -202,10 +192,12 @@ export default function LLMMovie() {
          </motion.div>
       </div>
 
-      {/* Render all Scenes */}
-      {scriptData.map((data, index) => (
-        <SceneBlock key={data.id} data={data} index={index} />
-      ))}
+      {/* Render all Scenes in a continuous vertical flow */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {scriptData.map((data, index) => (
+          <SceneBlock key={data.id} data={data} index={index} />
+        ))}
+      </div>
       
       {/* End Credits Spacer */}
       <div style={{ height: '50vh', background: '#030712', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
