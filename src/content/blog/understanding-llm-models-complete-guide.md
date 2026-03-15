@@ -123,6 +123,24 @@ Self-attention allows the model to directly connect "she" → "astronaut", "rock
 2. **Decoder**: Generates output token by token, attending to its own previous output (used in GPT — good for text generation)
 3. **Encoder-Decoder**: Combines both (used in T5, BART — good for translation and summarization)
 
+```mermaid
+timeline
+    title The Evolution of Language Models
+    section Statistical LMs
+        1990s : n-gram models
+        2000s : Bag of Words
+    section Neural LMs
+        2013 : Word2Vec (Embeddings)
+        2014 : GloVe
+        2015 : RNN & LSTMs
+    section Transformer Era
+        2017 : "Attention Is All You Need"
+        2018 : GPT-1
+        2020 : GPT-3
+        2022 : ChatGPT
+        2024 : GPT-4o, Claude 3.5, Gemini 1.5
+```
+
 ---
 
 ## 3. What Makes a Language Model "Large"?
@@ -206,40 +224,38 @@ The **context window** is the maximum number of tokens an LLM can "see" at one t
 
 Think of context window like a desk. Everything you place on the desk is what the model can reference when generating its response. Once the desk is full, older material falls off the edge and the model can no longer "see" it.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    CONTEXT WINDOW (e.g., 128K tokens)           │
-│                                                                 │
-│  [System Prompt] [Conversation History] [User Message] [Output] │
-│       ↑                  ↑                   ↑            ↑     │
-│   ~500 tokens        ~60K tokens         ~500 tokens   ~2K tokens│
-│                                                                 │
-│  ←────────────────── 128K total ──────────────────────────────→ │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+block-beta
+    columns 1
+    CW["CONTEXT WINDOW (e.g., 128K tokens)"]
+    block:blocks:4
+        SP["System Prompt\n(~500 tokens)"] CH["Conversation History\n(~60K tokens)"] UM["User Message\n(~500 tokens)"] OT["Output\n(~2K tokens)"]
+    end
 ```
 
 **How information flows through the system:**
 
-```
-User Input
-    ↓
-Tokenizer (text → token IDs)
-    ↓
-Context Window Assembly
-  ┌─────────────────────────────────────────┐
-  │ 1. System Prompt (persona, instructions)│
-  │ 2. Conversation History (prior turns)   │
-  │ 3. Retrieved Context (RAG documents)   │
-  │ 4. Current User Message                 │
-  └─────────────────────────────────────────┘
-    ↓
-Transformer (processes all tokens simultaneously via attention)
-    ↓
-Output Tokens (generated one by one, auto-regressively)
-    ↓
-Detokenizer (token IDs → text)
-    ↓
-Response to User
+```mermaid
+graph TD
+    A[User Input] --> B[Tokenizer]
+    B -->|Text → Token IDs| C[Context Window Assembly]
+    
+    subgraph Context Elements
+    C1[1. System Prompt]
+    C2[2. Conversation History]
+    C3[3. Retrieved Context / RAG]
+    C4[4. Current User Message]
+    end
+    
+    C1 -.-> C 
+    C2 -.-> C
+    C3 -.-> C
+    C4 -.-> C
+    
+    C --> D[Transformer Model]
+    D -->|Self-Attention Processing| E[Output Tokens]
+    E -->|Auto-regressive Generation| F[Detokenizer]
+    F -->|Token IDs → Text| G[Response to User]
 ```
 
 ### Context Window Sizes Over Time
@@ -652,23 +668,17 @@ This is the most practical question, and the answer depends on **four factors**:
 
 ### Decision Framework
 
-```
-                    ┌─── Is your data sensitive/regulated? ───Yes──→ Open Source (Llama, Mistral)
-                    │                                                   Self-hosted
-                    No
-                    │
-                    ├─── Is this high-volume (>1M requests/month)?
-                    │         Yes → Use cheaper/faster models (GPT-4o mini, 
-                    │               Claude Haiku, Gemini Flash)
-                    │         No  → Continue below
-                    │
-                    ├─── Is this a hard reasoning task (math, code, analysis)?
-                    │         Yes → Use o1/o3, Claude Opus, Gemini Ultra
-                    │         No  → Use GPT-4o, Claude Sonnet, Gemini Pro
-                    │
-                    └─── Do you need >100K tokens of context?
-                              Yes → Claude 3.5, Gemini 1.5 Pro/Flash
-                              No  → Any modern frontier model works
+```mermaid
+flowchart TD
+    A{Is your data sensitive<br/>or regulated?} 
+    A --"Yes"--> B[Open Source / Self-Hosted<br/>Llama, Mistral]
+    A --"No"--> C{Is this high-volume?<br/>>1M requests/month}
+    C --"Yes"--> D[Fast/Cheap Models<br/>GPT-4o mini, Claude Haiku, Gemini Flash]
+    C --"No"--> E{Is this a hard reasoning task?<br/>Math, Code, Analysis}
+    E --"Yes"--> F[Reasoning/Heavy Models<br/>o1/o3, Claude Opus, Gemini Ultra]
+    E --"No"--> G{Do you need >100K<br/>tokens of context?}
+    G --"Yes"--> H[Long Context Models<br/>Claude 3.5 Sonnet, Gemini 1.5 Pro]
+    G --"No"--> I[Balanced Frontier Models<br/>GPT-4o, Claude Sonnet, Gemini Pro]
 ```
 
 ### Model Selection at a Glance
@@ -909,10 +919,13 @@ As conversations get longer, they eventually approach the context limit. Differe
 
 Research shows that LLMs have better recall of information at the **beginning and end** of their context window, and worse recall of information buried in the **middle**.
 
-```
-Context Window:
-[🟢 Excellent recall] [🟡 Weak recall in middle] [🟢 Excellent recall]
-       Start          ←        Middle        →           End
+```mermaid
+xychart-beta
+    title Context Window Recall
+    x-axis "Position in Context Window" [Start, Middle, End]
+    y-axis "Recall Accuracy (%)" 0 --> 100
+    bar [95, 40, 95]
+    line [95, 40, 95]
 ```
 
 **Practical implication**: When providing a document to analyze, put the most critical information and instructions either at the very beginning (system prompt) or very end (before the question). Don't bury key facts in page 5 of a 20-page document.
