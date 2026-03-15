@@ -1,7 +1,7 @@
 import { useState, useEffect, useReducer, useRef } from 'react'
 
 const FULL_TITLE = [
-    { token: 'FACTORY', id: 43444, acronym: 'F' },
+    { token: 'FRONTIER', id: 43444, acronym: 'F' },
     { token: 'FOR', id: 1533, acronym: null },
     { token: 'ADVANCED', id: 17006, acronym: 'A' },
     { token: 'SKILLS', id: 16135, acronym: 'S' },
@@ -111,7 +111,7 @@ export default function FASTReveal() {
         <div style={{ padding: '40px 0 20px', minHeight: '180px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
 
-            {/* Row 1: FACTORY FOR ADVANCED SKILLS AND TALENT */}
+            {/* Row 1: FRONTIER FOR ADVANCED SKILLS AND TALENT */}
             <div style={{ 
                 display: 'flex', 
                 flexWrap: 'wrap',

@@ -980,6 +980,6 @@ Statistical LMs           Neural LMs              Transformer Era
 
 ---
 
-*Written for the FastinAI blog. FastinAI — Factory for Advanced Skills and Talent in Artificial Intelligence.*
+*Written for the FastinAI blog. FastinAI — Frontier for Advanced Skills and Talent in Artificial Intelligence.*
 
 *Last updated: March 2026*
