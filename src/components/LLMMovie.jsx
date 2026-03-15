@@ -93,40 +93,32 @@ const SceneBlock = ({ data, index }) => {
       style={{ minHeight: '300vh' }}
     >
       
-      {/* 1. THE FROZEN MASK (Solid Sticky Heading, TOP) */}
+      {/* 1. HEADING — frozen at top */}
       <div className="scened-heading">
-        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3.5rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
+        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
           {data.title}
         </h2>
         <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '12px', borderRadius: '2px' }} />
       </div>
 
-      {/* 2. THE CAMERA (Diagram BELOW Heading on Mobile) */}
-      <div className="scened-visual">
-         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
-            <data.Visual progress={smoothProgress} />
-         </div>
-      </div>
-
-      {/* 3. THE SCRIPT (Scrolls Upwards Underneath the Frozen Mask) */}
+      {/* 2. TEXT — scrolls freely through the center reading zone */}
       <div className="scened-text-flow">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '50vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '60vh' }}>
           {data.paragraphs.map((text, i) => {
-            // Pick a paragraph to highlight based on scroll progress
             const numParagraphs = data.paragraphs.length;
-            const startP = 0.2 + (i * (0.6 / numParagraphs));
-            const peakP = startP + 0.1;
-            const endP = peakP + 0.15;
+            // Give each paragraph a wide window — text stays bright for most of its scroll range
+            const startP = 0.1 + (i * (0.7 / numParagraphs));
+            const peakP = startP + 0.12;
+            const endP = startP + 0.2;
 
-            // Opacity fades to 0 smoothly before it hits the masking line
             const opacity = useTransform(smoothProgress, [startP, peakP, endP], [0, 1, 0]);
             
             return (
               <motion.div key={i} style={{ opacity }}>
                 <p style={{ 
-                  fontSize: 'clamp(1.3rem, 2.5vw, 2rem)', 
-                  color: '#ffffff', // High contrast pure white 
-                  lineHeight: 1.6, 
+                  fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', 
+                  color: '#ffffff',
+                  lineHeight: 1.7, 
                   fontWeight: 400
                 }}>
                   {text}
@@ -135,6 +127,13 @@ const SceneBlock = ({ data, index }) => {
             );
           })}
         </div>
+      </div>
+
+      {/* 3. VISUAL — pinned to bottom, masks text from below */}
+      <div className="scened-visual">
+         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+            <data.Visual progress={smoothProgress} />
+         </div>
       </div>
 
     </section>

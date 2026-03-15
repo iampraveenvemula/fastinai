@@ -347,93 +347,87 @@ body {
   color: var(--primary) !important;
   opacity: 0.8;
 }
-/* ─── Masked Stack Layout (Mobile-First) ────────────────────── */
+/* ─── Centered Reading Layout (Mobile-First) ────────────────── */
 .scened-layout {
   position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  background: var(--bg);
+  background: #030712;
 }
 
-.scened-visual {
-  position: sticky;
-  top: 64px; /* Under navbar */
-  width: 100%;
-  height: 45vh; /* Top half */
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle at center, #0a101f 0%, #030712 100%);
-  overflow: hidden;
-}
-
+/* Heading: Frozen at the very top under the navbar */
 .scened-heading {
   position: sticky;
-  top: 64px; /* Under navbar */
+  top: 64px;
   width: 100%;
-  padding: 24px 20px;
-  background: #030712; 
-  z-index: 20; /* Highest priority */
-  box-shadow: 0 10px 30px #030712;
+  padding: 20px 5%;
+  background: #030712;
+  z-index: 20;
+  /* Downward shadow blends the heading into the reading pane */
+  box-shadow: 0 20px 40px rgba(3, 7, 18, 0.95);
 }
 
+/* Text: Scrolls freely through the center of the screen */
+.scened-text-flow {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 5vh 7%;
+  padding-bottom: 45vh; /* Room to scroll before diagram mask */
+}
+
+/* Visual: Pinned to the BOTTOM of the screen, masking text from below */
 .scened-visual {
   position: sticky;
-  top: 15vh; /* Enough space for the heading */
+  bottom: 0;
   width: 100%;
-  height: 40vh; 
-  z-index: 15; /* Under heading, above text */
+  height: 40vh;
+  z-index: 15; /* Above text (10) but below heading (20) */
   display: flex;
   align-items: center;
   justify-content: center;
   background: radial-gradient(circle at center, #0a101f 0%, #030712 100%);
   overflow: hidden;
-  box-shadow: 0 16px 32px #030712;
-}
-
-.scened-text-flow {
-  position: relative;
-  z-index: 10; /* Lowest priority, scrolls under everything */
-  width: 100%;
-  padding: 0 5%;
-  padding-top: 10vh;
-  padding-bottom: 50vh; 
+  /* Upward shadow blends the diagram into the reading pane from below */
+  box-shadow: 0 -30px 50px rgba(3, 7, 18, 0.98);
 }
 
 @media (min-width: 900px) {
   .scened-layout {
     display: grid;
+    /* Heading row + Text rows share left col; Visual takes full right col */
     grid-template-columns: 1fr 1.2fr;
-    grid-template-areas: 
+    grid-template-areas:
       "heading visual"
-      "text visual";
+      "text    visual";
+    align-items: start;
   }
 
-  .scened-visual {
-    grid-area: visual;
-    width: 60vw;
-    height: 100vh;
-    top: 0;
-    right: 0;
-    box-shadow: none;
-  }
-
+  /* Reset all mobile sticky/bottom positioning for desktop */
   .scened-heading {
     grid-area: heading;
-    position: static; 
-    width: 40vw;
-    padding: 10vh 5vw 0 5vw;
+    position: sticky;
+    top: 15vh;
+    bottom: auto;
+    padding: 6vh 5vw 2vh 5vw;
     background: transparent;
     box-shadow: none;
     z-index: 10;
   }
 
+  .scened-visual {
+    grid-area: visual;
+    position: sticky;
+    top: 0;
+    bottom: auto;
+    width: auto;
+    height: 100vh;
+    box-shadow: none;
+  }
+
   .scened-text-flow {
     grid-area: text;
-    width: 40vw;
-    padding-left: 5vw;
-    padding-right: 5vw;
-    padding-top: 5vh;
+    padding: 4vh 5vw;
+    padding-bottom: 30vh;
   }
 }
