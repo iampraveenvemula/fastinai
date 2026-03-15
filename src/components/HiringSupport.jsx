@@ -17,7 +17,7 @@ export default function HiringSupport() {
                 <div ref={ref} className="reveal" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
                     <span className="label" style={{ display: 'block', marginBottom: 16 }}>Scale Your Engineering Team</span>
                     <h2 className="display" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', color: 'var(--text)', marginBottom: 24 }}>
-                        Elite Hiring Support
+                        Premier Hiring Support
                     </h2>
                     <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', lineHeight: 1.8, marginBottom: 48 }}>
                         I personally support your interview process to ensure you land 1% talent. From deep technical shortlisting to conducting final-round interviews for Senior AI roles.
