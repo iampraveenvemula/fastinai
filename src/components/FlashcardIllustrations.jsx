@@ -190,7 +190,7 @@ export const ContextWindowSVG = ({ isActive }) => {
           {/* The Desk */}
           <motion.path d="M 50 200 L 350 200 L 370 240 L 30 240 Z" fill="var(--bg-alt)" stroke="var(--text-muted)" strokeWidth={3}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} />
-          <motion.text x="200" y="230" textAnchor="middle" fontSize="20" fill="var(--text-light)" stroke="none">The Context Window (Working Memory)</text>
+          <motion.text x="200" y="230" textAnchor="middle" fontSize="20" fill="var(--text-light)" stroke="none">The Context Window (Working Memory)</motion.text>
 
           {/* Blocks landing on desk */}
           <motion.rect x="100" y="160" width="40" height="40" rx="4" fill="var(--primary)" stroke="var(--bg)" 
