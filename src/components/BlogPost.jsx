@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import LLMMovie from './LLMMovie';
+import TrainingFeed from './TrainingFeed';
 
 export default function BlogPost({ title, date, content }) {
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function BlogPost({ title, date, content }) {
       <Navbar />
       <div style={{ padding: '40px 20px', borderBottom: '1px solid var(--border)', paddingBottom: '30px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
         <div style={{ color: 'var(--primary)', marginBottom: '10px', fontSize: '0.9rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>
-          Cinematic Experience
+          Next-Gen Training (Coming Soon)
         </div>
         <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', lineHeight: 1.2, marginBottom: '20px', color: 'var(--text)' }}>
           {title}
@@ -23,17 +23,8 @@ export default function BlogPost({ title, date, content }) {
         </div>
       </div>
 
-      {/* Full Bleed Movie Experience */}
-      <LLMMovie />
+      <TrainingFeed />
 
-      <div className="container" style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
-        {/* Fallback link to full text if they really want it */}
-        <div style={{ marginTop: '80px', paddingTop: '40px', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
-           <p style={{ color: 'var(--text-muted)' }}>
-              Want the full academic deep-dive? <a href="https://github.com/iampraveenvemula/fastinai/blob/main/src/content/blog/understanding-llm-models-complete-guide.md" target="_blank" rel="noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', borderBottom: '1px solid var(--primary)' }}>Read the raw Markdown article here</a>.
-           </p>
-        </div>
-      </div>
       <Footer />
     </div>
   );
