@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Blog() {
     const ref = useRef(null)
@@ -31,14 +32,30 @@ export default function Blog() {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
                         {posts.map(p => (
-                            <div key={p.title} className="card-minimal" style={{ padding: 32, border: '1px solid var(--border)', borderRadius: 16 }}>
-                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 12, display: 'flex', gap: 16 }}>
-                                    <span>{p.date}</span>
-                                    <span>{p.read}</span>
+                            p.link === '#' ? (
+                                <div key={p.title} className="card-minimal" style={{ padding: 32, border: '1px solid var(--border)', borderRadius: 16, opacity: 0.6, cursor: 'default' }}>
+                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 12, display: 'flex', gap: 16 }}>
+                                        <span>{p.date}</span>
+                                        <span>{p.read}</span>
+                                    </div>
+                                    <h3 style={{ fontSize: '1.25rem', lineHeight: 1.4, color: 'var(--text)', marginBottom: 20 }}>{p.title}</h3>
+                                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>Coming soon...</span>
                                 </div>
-                                <h3 style={{ fontSize: '1.25rem', lineHeight: 1.4, color: 'var(--text)', marginBottom: 20 }}>{p.title}</h3>
-                                <a href={p.link} style={{ color: 'var(--text)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500 }}>Read Article →</a>
-                            </div>
+                            ) : (
+                                <Link key={p.title} to={p.link} style={{ textDecoration: 'none' }}>
+                                    <div className="card-minimal" style={{ padding: 32, border: '1px solid var(--border)', borderRadius: 16, cursor: 'pointer', transition: 'border-color 0.2s, transform 0.2s', height: '100%' }}
+                                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                                    >
+                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 12, display: 'flex', gap: 16 }}>
+                                            <span>{p.date}</span>
+                                            <span>{p.read}</span>
+                                        </div>
+                                        <h3 style={{ fontSize: '1.25rem', lineHeight: 1.4, color: 'var(--text)', marginBottom: 20 }}>{p.title}</h3>
+                                        <span style={{ color: 'var(--primary)', fontSize: '0.9rem', fontWeight: 500 }}>Read Article →</span>
+                                    </div>
+                                </Link>
+                            )
                         ))}
                     </div>
                 </div>
