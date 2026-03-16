@@ -23,14 +23,14 @@ export default function Navbar() {
             <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 60 }}>
 
                 {/* Logo */}
-                <a href="#" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
                     <LogoInline size="navbar" />
                 </a>
 
                 {/* Desktop nav */}
                 <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
                     {['Master Class', 'Accelerator', 'Hiring Support', 'Blog'].map(l => (
-                        <a key={l} href={`#${l.toLowerCase().replace(/ /g, '-')}`} style={{
+                        <a key={l} href={`/#${l.toLowerCase().replace(/ /g, '-')}`} style={{
                             fontFamily: 'var(--font-body)', color: 'var(--text-muted)',
                             fontSize: '0.875rem', fontWeight: 400, textDecoration: 'none',
                             transition: 'color 0.15s',
@@ -54,7 +54,7 @@ export default function Navbar() {
                 <div style={{ background: 'rgba(10,10,10,0.97)', borderTop: '1px solid var(--border)', padding: '12px 0 20px' }}>
                     <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         {['Master Class', 'Accelerator', 'Hiring Support', 'Blog'].map(l => (
-                            <a key={l} href={`#${l.toLowerCase().replace(/ /g, '-')}`} onClick={() => setMenuOpen(false)}
+                            <a key={l} href={`/#${l.toLowerCase().replace(/ /g, '-')}`} onClick={() => setMenuOpen(false)}
                                 style={{ padding: '12px 0', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', borderBottom: '1px solid var(--border)' }}
                             >{l}</a>
                         ))}

@@ -31,22 +31,21 @@ export default function MasterClass() {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32, marginBottom: 64 }}>
                         {/* Slow Pace */}
-                        <div className="card-minimal" style={{ padding: 40, border: '1px solid var(--border)', borderRadius: 20 }}>
-                            <div style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: 8 }}>DEEP DIVE</div>
-                            <h3 style={{ fontSize: '1.8rem', marginBottom: 16 }}>Slow Pace</h3>
+                        <div className="card-minimal pace-card" style={{ padding: 40, border: '1px solid var(--border)', borderRadius: 20 }}>
+                            <div style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: 8 }}>COMPREHENSIVE</div>
+                            <h3 style={{ fontSize: '1.8rem', marginBottom: 16 }}>Deep Dive Track</h3>
                             <div style={{ fontSize: '2.5rem', fontWeight: 300, marginBottom: 24, color: 'var(--text)' }}>8 Hours</div>
-                            <p style={{ color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>Comprehensive walkthrough of every concept, theory, and implementation detail for the patient learner.</p>
-                            <a href="#apply" className="btn btn-outline" style={{ width: '100%', justifyContent: 'center' }}>Reserve Seat →</a>
+                            <p style={{ color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>Detailed conceptual understanding in depth. Master the 'why' behind the code.</p>
+                            <button className="btn btn-outline" disabled style={{ width: '100%', justifyContent: 'center', opacity: 0.5, cursor: 'not-allowed' }}>Coming Soon</button>
                         </div>
 
                         {/* Fast Pace */}
-                        <div className="card-minimal" style={{ padding: 40, border: '1px solid var(--primary)', borderRadius: 20, position: 'relative' }}>
-                            <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: 'var(--primary)', color: '#000', fontSize: '0.7rem', fontWeight: 800, padding: '4px 12px', borderRadius: 20 }}>POPULAR</div>
-                            <div style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: 8 }}>EFFICIENT</div>
-                            <h3 style={{ fontSize: '1.8rem', marginBottom: 16 }}>Fast Pace</h3>
+                        <div className="card-minimal pace-card" style={{ padding: 40, border: '1px solid var(--border)', borderRadius: 20, position: 'relative' }}>
+                            <div style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: 8 }}>INTENSIVE</div>
+                            <h3 style={{ fontSize: '1.8rem', marginBottom: 16 }}>Accelerated Track</h3>
                             <div style={{ fontSize: '2.5rem', fontWeight: 300, marginBottom: 24, color: 'var(--text)' }}>4 Hours</div>
-                            <p style={{ color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>Straight to the code. No fluff. Aimed at experienced engineers who need production-ready patterns fast.</p>
-                            <a href="#apply" className="btn btn-fill" style={{ width: '100%', justifyContent: 'center' }}>Reserve Seat →</a>
+                            <p style={{ color: 'var(--text-muted)', marginBottom: 32, lineHeight: 1.6 }}>High-level coverage of the most important and critical topics. Straight to the code, no fluff.</p>
+                            <button className="btn btn-outline" disabled style={{ width: '100%', justifyContent: 'center', opacity: 0.5, cursor: 'not-allowed' }}>Coming Soon</button>
                         </div>
                     </div>
 
@@ -69,6 +68,10 @@ export default function MasterClass() {
                     </div>
                 </div>
             </div>
+            <style>{`
+                .pace-card { transition: border-color 0.3s ease; }
+                .pace-card:hover { border-color: var(--primary) !important; }
+            `}</style>
         </section>
     )
 }

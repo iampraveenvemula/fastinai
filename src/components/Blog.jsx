@@ -14,8 +14,6 @@ export default function Blog() {
 
     const posts = [
         { title: 'The Complete Beginner\'s Guide to Large Language Models (LLMs)', date: 'Mar 15, 2026', read: '15 min', link: '/blog/understanding-llm-models-complete-guide' },
-        { title: 'The Fall of Simple RAG', date: 'Mar 10, 2026', read: '5 min', link: '#' },
-        { title: 'Why your Agent is failing in production', date: 'Mar 02, 2026', read: '8 min', link: '#' },
     ]
 
     return (
