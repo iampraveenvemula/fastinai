@@ -41,13 +41,16 @@
   --border-mid: #D1D1D6;
   
   --primary: #B38728; /* Deeper gold for contrast */
-  --secondary: #8E8E93; 
+  --secondary: #636366; /* Much darker silver base */
   --accent: #B38728;
+  
+  /* Critical: The "AI" in the FastinAI logo uses this gradient */
+  --gradient-silver: linear-gradient(135deg, #1C1C1E 0%, #8E8E93 100%);
   
   --text: #1C1C1E; /* Heavy slate for main headings */
   --text-body: #3A3A3C;
-  --text-muted: #8E8E93;
-  --text-light: #AEAEB2;
+  --text-muted: #636366; /* Deepened for strong readability */
+  --text-light: #8E8E93;
   
   /* Scene Accents - Deeper for visibility on light gray */
   --accent-cyan: #0284c7; /* Sky 600 */
