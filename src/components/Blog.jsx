@@ -22,8 +22,7 @@ export default function Blog() {
                 <div ref={ref} className="reveal">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48, flexWrap: 'wrap', gap: 24 }}>
                         <div>
-                            <span className="label" style={{ display: 'block', marginBottom: 16 }}>Insights & Research</span>
-                            <h2 className="display" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', color: 'var(--text)' }}>Blog</h2>
+                            <h2 className="display" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', color: 'var(--text)' }}>Insights & Research</h2>
                         </div>
                         <a href="/blog" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500, borderBottom: '1px solid var(--primary)', paddingBottom: 4 }}>View all articles</a>
                     </div>

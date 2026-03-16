@@ -29,8 +29,8 @@ export default function Navbar() {
 
                 {/* Desktop nav */}
                 <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
-                    {['Master Class', 'Accelerator', 'Hiring Support', 'Blog'].map(l => (
-                        <a key={l} href={`/#${l.toLowerCase().replace(/ /g, '-')}`} style={{
+                    {[{name: 'Master Class', id: 'master-class'}, {name: 'Accelerator', id: 'accelerator'}, {name: 'Hiring Support', id: 'hiring-support'}, {name: 'Insights & Research', id: 'blog'}].map(l => (
+                        <a key={l.name} href={`/#${l.id}`} style={{
                             fontFamily: 'var(--font-body)', color: 'var(--text-muted)',
                             fontSize: '0.875rem', fontWeight: 400, textDecoration: 'none',
                             transition: 'color 0.15s',
@@ -53,10 +53,10 @@ export default function Navbar() {
             {menuOpen && (
                 <div style={{ background: 'rgba(10,10,10,0.97)', borderTop: '1px solid var(--border)', padding: '12px 0 20px' }}>
                     <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        {['Master Class', 'Accelerator', 'Hiring Support', 'Blog'].map(l => (
-                            <a key={l} href={`/#${l.toLowerCase().replace(/ /g, '-')}`} onClick={() => setMenuOpen(false)}
+                        {[{name: 'Master Class', id: 'master-class'}, {name: 'Accelerator', id: 'accelerator'}, {name: 'Hiring Support', id: 'hiring-support'}, {name: 'Insights & Research', id: 'blog'}].map(l => (
+                            <a key={l.name} href={`/#${l.id}`} onClick={() => setMenuOpen(false)}
                                 style={{ padding: '12px 0', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', borderBottom: '1px solid var(--border)' }}
-                            >{l}</a>
+                            >{l.name}</a>
                         ))}
                     </div>
                 </div>
