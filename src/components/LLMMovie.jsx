@@ -47,7 +47,6 @@ const scriptData = [
     paragraphs: [
       "Despite being called 'Language' models, they cannot read words.",
       "Text is sliced into optimal computational blocks called Tokens. 'Unbelievable' breaks into 'un', 'believ', 'able'.",
-      "One token is roughly 4 letters in English.",
       "This is critical because API costs and computational limits are strictly based on token counts, not words."
     ]
   },
@@ -151,20 +150,7 @@ export default function LLMMovie() {
   return (
     <div style={{ background: '#030712', width: '100%', marginLeft: 'calc(-50vw + 50%)' }}>
       
-      {/* Cinematic Intro Header */}
-      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 20px' }}>
-         <div style={{ fontSize: '0.9rem', color: 'var(--primary)', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '20px' }}>An Interactive Documentary</div>
-         <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontFamily: 'Fraunces, serif', color: '#fff', fontWeight: 300, lineHeight: 1.1, marginBottom: '20px' }}>Inside the <span style={{ color: 'var(--primary)' }}>Machine</span></h1>
-         <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto' }}>Scroll to explore the architecture of Large Language Models.</p>
-         
-         <motion.div 
-           animate={{ y: [0, 10, 0] }} 
-           transition={{ repeat: Infinity, duration: 2 }}
-           style={{ marginTop: '80px', color: 'var(--text-muted)', fontSize: '0.9rem' }}
-         >
-           ↓ SCROLL DOWN
-         </motion.div>
-      </div>
+
 
       {/* Render all Scenes in a continuous vertical flow */}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
