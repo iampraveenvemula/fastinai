@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { LogoInline } from './AnimatedLogo'
+import { useTheme } from './ThemeContext'
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
+    const { theme, toggleTheme } = useTheme()
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 32)
@@ -27,7 +29,7 @@ export default function Navbar() {
                     <LogoInline size="navbar" />
                 </a>
 
-                {/* Desktop nav */}
+                {/* Desktop nav & Theme Button */}
                 <div className="hidden md:flex" style={{ alignItems: 'center', gap: 36 }}>
                     {[{name: 'Master Class', id: 'master-class'}, {name: 'Accelerator', id: 'accelerator'}, {name: 'Hiring Support', id: 'hiring-support'}, {name: 'Insights & Research', id: 'blog'}].map(l => (
                         <a key={l.name} href={`/#${l.id}`} style={{
@@ -39,6 +41,20 @@ export default function Navbar() {
                             onMouseLeave={e => e.target.style.color = 'var(--text-muted)'}
                         >{l.name}</a>
                     ))}
+                    
+                    <button onClick={toggleTheme} style={{ 
+                        background: 'transparent', border: '1px solid var(--border)', 
+                        borderRadius: '50%', width: '32px', height: '32px', 
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', color: 'var(--text)', transition: 'all 0.2s',
+                        outline: 'none'
+                    }} aria-label="Toggle Theme">
+                        {theme === 'dark' ? (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        ) : (
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        )}
+                    </button>
                 </div>
 
                 {/* Mobile */}

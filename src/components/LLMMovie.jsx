@@ -161,7 +161,7 @@ const SceneBlock = ({ data, index }) => {
 
 export default function LLMMovie() {
   return (
-    <div style={{ background: '#030712', width: '100%', marginLeft: 'calc(-50vw + 50%)' }}>
+    <div style={{ background: 'var(--bg-deep)', width: '100%', marginLeft: 'calc(-50vw + 50%)' }}>
       
 
 
@@ -173,7 +173,7 @@ export default function LLMMovie() {
       </div>
       
       {/* End Credits Spacer */}
-      <div style={{ height: '50vh', background: '#030712', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ height: '50vh', background: 'var(--bg-deep)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
          <h2 style={{ fontFamily: 'Fraunces, serif', color: 'var(--text-muted)', fontWeight: 300 }}>End of Sequence</h2>
       </div>
 

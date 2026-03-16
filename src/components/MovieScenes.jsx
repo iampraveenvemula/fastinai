@@ -12,10 +12,10 @@ const glassTheme = {
 };
 
 const colors = {
-  cyan: "#22d3ee",
-  violet: "#a78bfa",
+  cyan: "var(--accent-cyan)",
+  violet: "var(--accent-violet)",
   blue: "#3b82f6",
-  white: "#f8fafc",
+  white: "var(--text)",
   glassFill: "url(#glass-gradient)",
   glassStroke: "rgba(255, 255, 255, 0.15)",
 };
@@ -42,8 +42,8 @@ export const Defs = () => (
       </feMerge>
     </filter>
     <linearGradient id="glass-gradient" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stopColor="rgba(255,255,255,0.08)" />
-      <stop offset="100%" stopColor="rgba(255,255,255,0.01)" />
+      <stop offset="0%" stopColor="var(--text-muted)" stopOpacity="0.08" />
+      <stop offset="100%" stopColor="var(--text-muted)" stopOpacity="0.01" />
     </linearGradient>
     <linearGradient id="fade-right" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stopColor={colors.white} stopOpacity="0" />
@@ -79,7 +79,7 @@ export const Scene1Autocomplete = ({ progress }) => {
          {/* Central Node */}
          <motion.g style={{ scale: nodeScale, opacity: nodeOpacity }}>
            <circle cx="0" cy="0" r="40" fill={colors.glassFill} stroke={colors.cyan} filter="url(#glow-cyan)" />
-           <circle cx="0" cy="0" r="30" fill="none" stroke="rgba(255,255,255,0.1)" />
+           <circle cx="0" cy="0" r="30" fill="none" stroke="var(--text-muted)" />
          </motion.g>
          
          {/* The Typed Text */}
@@ -91,7 +91,7 @@ export const Scene1Autocomplete = ({ progress }) => {
 
          {/* Fiber Optic Data Lines */}
          <motion.path d="M 0 40 C 0 100 -120 150 -120 200" stroke={colors.cyan} strokeWidth="2" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} opacity="0.8" filter="url(#glow-cyan)" />
-         <motion.path d="M 0 40 C 0 100 120 150 120 200" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} />
+         <motion.path d="M 0 40 C 0 100 120 150 120 200" stroke="var(--text-muted)" strokeWidth="1" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} />
          
          {/* Hot Branch (High Probability) */}
          <motion.g style={{ scale: branchScale, opacity: branchOpacity, originX: "-120px", originY: "200px" }}>
@@ -103,7 +103,7 @@ export const Scene1Autocomplete = ({ progress }) => {
          {/* Cold Branch */}
          <motion.g style={{ scale: branchScale, opacity: branchOpacity, originX: "120px", originY: "200px" }}>
             <rect x="60" y="200" width="120" height="50" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
-            <text x="120" y="232" textAnchor="middle" fontSize="14" fill="rgba(255,255,255,0.4)" letterSpacing="1">COLD [0.15]</text>
+            <text x="120" y="232" textAnchor="middle" fontSize="14" fill="var(--text-muted)" letterSpacing="1">COLD [0.15]</text>
          </motion.g>
       </g>
     </svg>
@@ -126,22 +126,22 @@ export const Scene2Evolution = ({ progress }) => {
       <g transform="translate(150, 300)">
         
         {/* Main Neural River */}
-        <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+        <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="var(--text-muted)" strokeWidth="1" />
         <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="url(#fade-right)" strokeWidth="8" style={{ opacity: 0.1 }} />
 
         {/* N-Grams */}
         <motion.g style={{ opacity: node1Opacity }} transform="translate(100, 0)">
           <circle cx="0" cy="0" r="12" fill={colors.glassFill} stroke={colors.glassStroke} />
-          <circle cx="0" cy="0" r="4" fill="rgba(255,255,255,0.4)" stroke="none" />
-          <text x="0" y="35" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="12">1990s</text>
-          <text x="0" y="-25" textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize="14" fontWeight="600" letterSpacing="2">N-GRAMS</text>
+          <circle cx="0" cy="0" r="4" fill="var(--text-muted)" stroke="none" />
+          <text x="0" y="35" textAnchor="middle" fill="var(--text-muted)" fontSize="12">1990s</text>
+          <text x="0" y="-25" textAnchor="middle" fill="var(--text)" fontSize="14" fontWeight="600" letterSpacing="2">N-GRAMS</text>
         </motion.g>
 
         {/* Neural Embeddings */}
         <motion.g style={{ opacity: node2Opacity }} transform="translate(300, 0)">
           <circle cx="0" cy="0" r="16" fill={colors.glassFill} stroke={colors.violet} filter="url(#glow-violet)" opacity="0.4" />
           <circle cx="0" cy="0" r="12" fill={colors.glassFill} stroke={colors.violet} />
-          <text x="0" y="35" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="12">2013</text>
+          <text x="0" y="35" textAnchor="middle" fill="var(--text-muted)" fontSize="12">2013</text>
           <text x="0" y="-25" textAnchor="middle" fill={colors.white} fontSize="14" fontWeight="600" letterSpacing="2">EMBEDDINGS (RNN)</text>
         </motion.g>
 
@@ -149,7 +149,7 @@ export const Scene2Evolution = ({ progress }) => {
         <motion.g style={{ opacity: node3Opacity }} transform="translate(500, 0)">
           <circle cx="0" cy="0" r="24" fill={colors.glassFill} stroke={colors.cyan} filter="url(#glow-cyan)" opacity="0.6"/>
           <circle cx="0" cy="0" r="16" fill={colors.cyan} stroke="none" />
-          <text x="0" y="45" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="12">2017</text>
+          <text x="0" y="45" textAnchor="middle" fill="var(--text-muted)" fontSize="12">2017</text>
           <text x="0" y="-35" textAnchor="middle" fill={colors.cyan} fontSize="18" fontWeight="bold" letterSpacing="2" filter="url(#glow-cyan)">TRANSFORMER</text>
           
           {/* Energy Pulse */}
@@ -174,18 +174,18 @@ export const Scene3Attention = ({ progress }) => {
       <g transform="translate(450, 300)">
         
         {/* Sentence Grid Layout (Modern typography) */}
-        <text x="-250" y="-50" fontSize="20" fill="rgba(255,255,255,0.4)">The</text>
+        <text x="-250" y="-50" fontSize="20" fill="var(--text-muted)">The</text>
         <rect x="-180" y="-80" width="140" height="40" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
         <text x="-110" y="-55" textAnchor="middle" fontSize="20" fill={colors.white} fontWeight="500">astronaut</text>
         
-        <text x="0" y="-50" textAnchor="middle" fontSize="20" fill="rgba(255,255,255,0.4)">finally</text>
+        <text x="0" y="-50" textAnchor="middle" fontSize="20" fill="var(--text-muted)">finally</text>
         
         <rect x="80" y="-80" width="120" height="40" rx="6" fill="rgba(34, 211, 238, 0.05)" stroke={colors.cyan} filter="url(#glow-cyan)" opacity="0.5"/>
         <rect x="80" y="-80" width="120" height="40" rx="6" fill="none" stroke={colors.cyan} />
         <text x="140" y="-55" textAnchor="middle" fontSize="20" fill={colors.cyan} fontWeight="600">boarded</text>
 
-        <text x="-150" y="50" fontSize="20" fill="rgba(255,255,255,0.4)">the</text>
-        <text x="-50" y="50" fontSize="20" fill="rgba(255,255,255,0.6)">rocket</text>
+        <text x="-150" y="50" fontSize="20" fill="var(--text-muted)">the</text>
+        <text x="-50" y="50" fontSize="20" fill="var(--text-muted)">rocket</text>
         
         <rect x="80" y="20" width="80" height="40" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
         <text x="120" y="45" textAnchor="middle" fontSize="20" fill={colors.white} fontWeight="500">she</text>
@@ -200,7 +200,7 @@ export const Scene3Attention = ({ progress }) => {
         {/* Weak Attention */}
         <motion.path 
           d="M 140 -40 C 140 0 -30 -10 -30 30" 
-          stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="4 4" 
+          stroke="var(--text-muted)" strokeWidth="1.5" strokeDasharray="4 4" 
           style={{ strokeDashoffset: lineDraw }}
         />
 
@@ -241,7 +241,7 @@ export const Scene4Tokens = ({ progress }) => {
 
         {/* Data Chips (Tokens) */}
         <motion.g style={{ x: useTransform(splitOffset, v => -v), opacity: tokenOpacity }}>
-          <rect x="-200" y="60" width="100" height="40" rx="4" fill={colors.glassFill} stroke="rgba(255,255,255,0.2)" />
+          <rect x="-200" y="60" width="100" height="40" rx="4" fill={colors.glassFill} stroke="var(--text-muted)" />
           <text x="-150" y="85" textAnchor="middle" fill={colors.white} fontSize="12" letterSpacing="1" fontWeight="500">TOKEN_42</text>
         </motion.g>
 
@@ -252,7 +252,7 @@ export const Scene4Tokens = ({ progress }) => {
         </motion.g>
 
         <motion.g style={{ x: splitOffset, opacity: tokenOpacity }}>
-          <rect x="100" y="60" width="100" height="40" rx="4" fill={colors.glassFill} stroke="rgba(255,255,255,0.2)" />
+          <rect x="100" y="60" width="100" height="40" rx="4" fill={colors.glassFill} stroke="var(--text-muted)" />
           <text x="150" y="85" textAnchor="middle" fill={colors.white} fontSize="12" letterSpacing="1" fontWeight="500">TOKEN_03</text>
         </motion.g>
 
@@ -281,7 +281,7 @@ export const Scene5Context = ({ progress }) => {
       <g transform="translate(450, 300)">
         
         {/* Working Node Array Base */}
-        <rect x="-160" y="40" width="320" height="12" rx="6" fill={colors.glassFill} stroke="rgba(255,255,255,0.1)" />
+        <rect x="-160" y="40" width="320" height="12" rx="6" fill={colors.glassFill} stroke="var(--text-muted)" />
         <text x="0" y="75" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="12" letterSpacing="4" fontWeight="600">CONTEXT WINDOW (BUFFER)</text>
 
         {/* Initial Overloading Block */}
@@ -325,10 +325,10 @@ export const Scene6Decision = ({ progress }) => {
         <text x="0" y="5" textAnchor="middle" fill={colors.white} fontSize="14" fontWeight="600" letterSpacing="2">THE TASK</text>
 
         {/* Fast Path */}
-        <motion.path d="M -60 0 C -200 0 -200 100 -200 150" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="500" style={{ strokeDashoffset: lineDraw1 }} />
+        <motion.path d="M -60 0 C -200 0 -200 100 -200 150" stroke="var(--text-muted)" strokeWidth="2" strokeDasharray="500" style={{ strokeDashoffset: lineDraw1 }} />
         <motion.g style={{ opacity: node1Op }} transform="translate(-200, 150)">
           <rect x="-70" y="0" width="140" height="40" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
-          <text x="0" y="15" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="10" fontWeight="600">HIGH THROUGHPUT</text>
+          <text x="0" y="15" textAnchor="middle" fill="var(--text-muted)" fontSize="10" fontWeight="600">HIGH THROUGHPUT</text>
           <text x="0" y="30" textAnchor="middle" fill={colors.white} fontSize="12" fontWeight="500">Gemini Flash</text>
         </motion.g>
 
