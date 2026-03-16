@@ -129,14 +129,16 @@ const SceneBlock = ({ data, index }) => {
              const pOpacity = useTransform(
                  smoothProgress, 
                  [startPoint, fadeInEnd], 
-                 [0, 1] // It never fades out locally, only the parent container fades at 0.95
+                 [0, 1],
+                 { clamp: true } // Ensure it mathematically stays at 1 and never drops back
              );
              
              // Optional: Add a slight upward slide as it fades in for a premium feel
              const pY = useTransform(
                  smoothProgress,
                  [startPoint, fadeInEnd],
-                 [20, 0]
+                 [20, 0],
+                 { clamp: true }
              );
              
              return (
