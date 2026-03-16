@@ -110,22 +110,32 @@ const SceneBlock = ({ data, index }) => {
       {/* 3. TEXT — sticky block that stays visible while the scene animation plays */}
       <motion.div className="scened-text-flow" style={{ 
           position: 'sticky', 
-          top: 'max(20vh, 140px)', 
+          top: 'max(30vh, 200px)', 
           zIndex: 10,
-          opacity: useTransform(smoothProgress, [0.0, 0.1, 0.9, 1.0], [0, 1, 1, 0])
+          opacity: useTransform(smoothProgress, [0.0, 0.05, 0.95, 1.0], [0, 1, 1, 0])
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          {data.paragraphs.map((text, i) => (
-            <p key={i} style={{ 
-              fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)', 
-              color: 'var(--text)',
-              lineHeight: 1.7,
-              fontWeight: 400,
-              textShadow: '0 2px 10px rgba(0,0,0,0.8)'
-            }}>
-              {text}
-            </p>
-          ))}
+          {data.paragraphs.map((text, i) => {
+             // Stagger the fade-in based on paragraph index, but once faded in, it stays visible until the end.
+             const numP = data.paragraphs.length;
+             const fadeStart = 0.05 + (i * (0.8 / numP));
+             const fadeEnd = fadeStart + 0.1;
+             
+             const pOpacity = useTransform(smoothProgress, [fadeStart, fadeEnd], [0, 1]);
+             
+             return (
+              <motion.p key={i} style={{ 
+                fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)', 
+                color: 'var(--text)',
+                lineHeight: 1.7,
+                fontWeight: 400,
+                textShadow: '0 2px 10px rgba(0,0,0,0.8)',
+                opacity: pOpacity
+              }}>
+                {text}
+              </motion.p>
+            );
+          })}
         </div>
       </motion.div>
 
