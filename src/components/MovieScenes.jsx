@@ -123,8 +123,8 @@ export const Scene2Evolution = ({ progress }) => {
 
 // --- SCENE 3: Attention (Matrix Mapping) ---
 export const Scene3Attention = ({ progress }) => {
-  const lineDraw = useTransform(progress, [0.2, 0.6], [1000, 0]);
-  const highlightOpacity = useTransform(progress, [0.5, 0.7], [0, 1]);
+  const lineDraw = useTransform(progress, [0.6, 0.85], [1000, 0]);
+  const highlightOpacity = useTransform(progress, [0.75, 0.9], [0, 1]);
   
   return (
     <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
@@ -175,9 +175,9 @@ export const Scene3Attention = ({ progress }) => {
 
 // --- SCENE 4: Tokenization (Data Slicing) ---
 export const Scene4Tokens = ({ progress }) => {
-  const sliceY = useTransform(progress, [0.1, 0.4], [-100, 100]);
-  const splitOffset = useTransform(progress, [0.4, 0.6], [0, 40]);
-  const tokenOpacity = useTransform(progress, [0.5, 0.7], [0, 1]);
+  const sliceY = useTransform(progress, [0.35, 0.55], [-100, 100]);
+  const splitOffset = useTransform(progress, [0.55, 0.66], [0, 40]);
+  const tokenOpacity = useTransform(progress, [0.5, 0.66], [0, 1]);
 
   return (
     <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
@@ -262,13 +262,13 @@ export const Scene5Context = ({ progress }) => {
 
 // --- SCENE 6: Model Decision (Neural Pathways) ---
 export const Scene6Decision = ({ progress }) => {
-  const lineDraw1 = useTransform(progress, [0.1, 0.3], [500, 0]);
-  const lineDraw2 = useTransform(progress, [0.3, 0.5], [500, 0]);
-  const lineDraw3 = useTransform(progress, [0.5, 0.7], [500, 0]);
+  const lineDraw1 = useTransform(progress, [0.25, 0.4], [500, 0]);
+  const lineDraw2 = useTransform(progress, [0.5, 0.65], [500, 0]);
+  const lineDraw3 = useTransform(progress, [0.75, 0.9], [500, 0]);
   
-  const node1Op = useTransform(progress, [0.2, 0.3], [0, 1]);
-  const node2Op = useTransform(progress, [0.4, 0.5], [0, 1]);
-  const node3Op = useTransform(progress, [0.6, 0.7], [0, 1]);
+  const node1Op = useTransform(progress, [0.35, 0.45], [0, 1]);
+  const node2Op = useTransform(progress, [0.6, 0.7], [0, 1]);
+  const node3Op = useTransform(progress, [0.85, 0.95], [0, 1]);
 
   return (
     <svg viewBox="0 0 800 600" width="100%" height="100%" style={techTheme} preserveAspectRatio="xMidYMid meet">
