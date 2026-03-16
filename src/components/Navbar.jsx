@@ -37,7 +37,7 @@ export default function Navbar() {
                         }}
                             onMouseEnter={e => e.target.style.color = 'var(--text)'}
                             onMouseLeave={e => e.target.style.color = 'var(--text-muted)'}
-                        >{l}</a>
+                        >{l.name}</a>
                     ))}
                 </div>
 
