@@ -60,21 +60,27 @@ export const Scene1Autocomplete = ({ progress }) => {
   
   // Blink cursor matches text appearance
   const blinkOpacity = useTransform(progress, p => (Math.floor(p * 20) % 2 === 0 ? 1 : 0));
+
+  // Central Node appears *after* text (0.2 to 0.35)
+  const nodeScale = useTransform(progress, [0.2, 0.35], [0, 1]);
+  const nodeOpacity = useTransform(progress, [0.2, 0.35], [0, 1]);
   
-  // Lines draw out *after* text appears (from 0.3 to 0.5)
-  const dashOffset = useTransform(progress, [0.3, 0.5], [1000, 0]);
+  // Lines draw out *after* Central Node appears (from 0.35 to 0.55)
+  const dashOffset = useTransform(progress, [0.35, 0.55], [1000, 0]);
   
-  // Nodes appear at the end of the lines (from 0.5 to 0.7)
-  const branchScale = useTransform(progress, [0.5, 0.7], [0, 1]);
-  const branchOpacity = useTransform(progress, [0.5, 0.7], [0, 1]);
+  // Branches appear at the end of the lines (from 0.55 to 0.75)
+  const branchScale = useTransform(progress, [0.55, 0.75], [0, 1]);
+  const branchOpacity = useTransform(progress, [0.55, 0.75], [0, 1]);
 
   return (
     <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(450, 300)">
          {/* Central Node */}
-         <circle cx="0" cy="0" r="40" fill={colors.glassFill} stroke={colors.cyan} filter="url(#glow-cyan)" />
-         <circle cx="0" cy="0" r="30" fill="none" stroke="rgba(255,255,255,0.1)" />
+         <motion.g style={{ scale: nodeScale, opacity: nodeOpacity }}>
+           <circle cx="0" cy="0" r="40" fill={colors.glassFill} stroke={colors.cyan} filter="url(#glow-cyan)" />
+           <circle cx="0" cy="0" r="30" fill="none" stroke="rgba(255,255,255,0.1)" />
+         </motion.g>
          
          {/* The Typed Text */}
          <motion.text x="-180" y="-120" fontSize="32" fill={colors.white} fontWeight="300" 
