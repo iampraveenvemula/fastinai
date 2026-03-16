@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import LLMMovie from './LLMMovie';
 
-export default function BlogPost({ title, date, content }) {
+export default function BlogPost({ title = "LLM Introduction", date = "March 15, 2026", content }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
