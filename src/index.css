@@ -354,12 +354,13 @@ body {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   background: #030712;
+  min-height: 140vh; /* Shorter scroll height on mobile for smoother flow */
 }
 
 /* Visual: Takes top 40vh on mobile to prevent overlapping text */
 .scened-visual {
   position: sticky;
-  top: 0;
+  top: 50px; /* Sits tightly under the Navbar */
   width: 100%;
   height: 40vh;
   z-index: 1; /* Behind everything */
@@ -374,7 +375,7 @@ body {
 /* Heading: floats at the top */
 .scened-heading {
   position: sticky;
-  top: 0;
+  top: 50px; /* Sits tightly under the Navbar just like the visual */
   width: 100%;
   padding: 15px 5%;
   background: linear-gradient(to bottom, #030712 80%, transparent 100%);
@@ -384,13 +385,13 @@ body {
 /* Text: Stacks below visual on mobile */
 .scened-text-flow {
   position: sticky;
-  top: 40vh;
+  top: calc(40vh + 50px);
   z-index: 10;
   width: 100%;
   padding: 20px 5%;
   padding-bottom: 10vh;
   background: #030712;
-  min-height: 60vh;
+  min-height: calc(60vh - 50px);
 }
 
 @media (min-width: 900px) {
@@ -402,13 +403,13 @@ body {
       "heading visual"
       "text    visual";
     align-items: start;
-    min-height: 300vh;
+    min-height: 250vh; /* Restored for smoother, slower desktop reading */
   }
 
   .scened-heading {
     grid-area: heading;
     position: sticky;
-    top: 15vh;
+    top: 80px; /* Accounts for desktop navbar */
     bottom: auto;
     padding: 6vh 5vw 2vh 5vw;
     background: transparent;
@@ -418,17 +419,17 @@ body {
   .scened-visual {
     grid-area: visual;
     position: sticky;
-    top: 0;
+    top: 50px; /* Fits right under Navbar */
     bottom: auto;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 50px);
     border-bottom: none;
   }
 
   .scened-text-flow {
     grid-area: text;
     position: sticky;
-    top: 30vh;
+    top: max(30vh, 180px);
     padding: 0 5vw;
     background: transparent;
     min-height: auto;
