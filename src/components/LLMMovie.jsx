@@ -107,40 +107,27 @@ const SceneBlock = ({ data, index }) => {
         <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '12px', borderRadius: '2px' }} />
       </div>
 
-      {/* 3. TEXT — floats over the diagram, nearly invisible at edges, bright in center */}
-      <div className="scened-text-flow">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '70vh' }}>
-          {data.paragraphs.map((text, i) => {
-            const numParagraphs = data.paragraphs.length;
-            // Wide fade curve: enters at near-zero opacity from the diagram,
-            // peaks to full white in the reading zone, then fades back out at the top
-            const segW = 0.75 / numParagraphs;
-            const startP = 0.1 + (i * segW);
-            const peakStart = startP + segW * 0.15;
-            const peakEnd   = startP + segW * 0.6;
-            const endP      = startP + segW * 0.85;
-
-            const opacity = useTransform(
-              smoothProgress,
-              [startP, peakStart, peakEnd, endP],
-              [0.05, 1, 1, 0.05]  // near-zero at entry and exit, full white in center
-            );
-
-            return (
-              <motion.div key={i} style={{ opacity }}>
-                <p style={{ 
-                  fontSize: 'clamp(1.25rem, 2.5vw, 1.9rem)', 
-                  color: '#ffffff',
-                  lineHeight: 1.7,
-                  fontWeight: 400
-                }}>
-                  {text}
-                </p>
-              </motion.div>
-            );
-          })}
+      {/* 3. TEXT — sticky block that stays visible while the scene animation plays */}
+      <motion.div className="scened-text-flow" style={{ 
+          position: 'sticky', 
+          top: 'max(20vh, 140px)', 
+          zIndex: 10,
+          opacity: useTransform(smoothProgress, [0.0, 0.1, 0.9, 1.0], [0, 1, 1, 0])
+      }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          {data.paragraphs.map((text, i) => (
+            <p key={i} style={{ 
+              fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)', 
+              color: 'var(--text)',
+              lineHeight: 1.7,
+              fontWeight: 400,
+              textShadow: '0 2px 10px rgba(0,0,0,0.8)'
+            }}>
+              {text}
+            </p>
+          ))}
         </div>
-      </div>
+      </motion.div>
 
     </section>
   );
