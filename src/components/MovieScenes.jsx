@@ -55,12 +55,18 @@ export const Defs = () => (
 
 // --- SCENE 1: Autocomplete (The Cursor) ---
 export const Scene1Autocomplete = ({ progress }) => {
-  const dashOffset = useTransform(progress, [0, 0.4], [1000, 0]);
-  const textOpacity = useTransform(progress, [0.3, 0.5], [0, 1]);
+  // Text appears between 0 - 0.2
+  const textOpacity = useTransform(progress, [0, 0.2], [0, 1]); 
+  
+  // Blink cursor matches text appearance
   const blinkOpacity = useTransform(progress, p => (Math.floor(p * 20) % 2 === 0 ? 1 : 0));
   
-  const branchScale = useTransform(progress, [0.6, 0.8], [0, 1]);
-  const branchOpacity = useTransform(progress, [0.6, 0.8], [0, 1]);
+  // Lines draw out *after* text appears (from 0.3 to 0.5)
+  const dashOffset = useTransform(progress, [0.3, 0.5], [1000, 0]);
+  
+  // Nodes appear at the end of the lines (from 0.5 to 0.7)
+  const branchScale = useTransform(progress, [0.5, 0.7], [0, 1]);
+  const branchOpacity = useTransform(progress, [0.5, 0.7], [0, 1]);
 
   return (
     <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
