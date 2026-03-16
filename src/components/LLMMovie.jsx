@@ -92,19 +92,19 @@ const SceneBlock = ({ data, index }) => {
       style={{ minHeight: '300vh' }}
     >
       
-      {/* 1. VISUAL — Full-screen sticky background (renders first so sticky works) */}
-      <div className="scened-visual">
-         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
-            <data.Visual progress={smoothProgress} />
-         </div>
-      </div>
-
-      {/* 2. HEADING — sticky at top with gradient fade below it */}
+      {/* 1. HEADING — sticky at top with gradient fade below it */}
       <div className="scened-heading">
         <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', color: '#ffffff', fontFamily: 'Inter, sans-serif', fontWeight: 600, letterSpacing: '-0.5px', margin: 0 }}>
           {data.title}
         </h2>
         <div style={{ width: '40px', height: '4px', background: '#22d3ee', marginTop: '12px', borderRadius: '2px', boxShadow: '0 0 10px rgba(34, 211, 238, 0.5)' }} />
+      </div>
+
+      {/* 2. VISUAL — Full-screen sticky background */}
+      <div className="scened-visual">
+         <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+            <data.Visual progress={smoothProgress} />
+         </div>
       </div>
 
       {/* 3. TEXT — sticky block that stays visible while the scene animation plays */}
