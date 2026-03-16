@@ -8,17 +8,15 @@ export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState('dark'); // Default to dark aesthetic
 
   useEffect(() => {
-    // Check localStorage or system preference on mount
+    // Check localStorage on mount
     const savedTheme = localStorage.getItem('fastinai-theme');
     if (savedTheme) {
       setTheme(savedTheme);
       if (savedTheme === 'light') {
         document.documentElement.classList.add('light');
       }
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      setTheme('light');
-      document.documentElement.classList.add('light');
     }
+    // No fallback to OS light mode. Default remains 'dark'.
   }, []);
 
   const toggleTheme = () => {
