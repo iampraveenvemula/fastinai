@@ -366,7 +366,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+  background: radial-gradient(circle at center, #0B1120 0%, #030712 100%);
   overflow: hidden;
 }
 
