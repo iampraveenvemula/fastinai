@@ -12,10 +12,9 @@ const scriptData = [
     title: "1. The Illusion of Thought",
     Visual: Scene1Autocomplete,
     paragraphs: [
-      "Language models do not think. They do not reason. They do not 'know' facts.",
-      "At their absolute core, they are statistical engines designed to do exactly one thing...",
-      "...predict the next sequence of characters based on all the characters that came before it.",
-      "The 'magic' happens because the neural networks are so impossibly large, the predictions mimic true understanding."
+      "Language models do not think. They do not reason.",
+      "At their core, they are pure statistical engines...",
+      "...predicting the next character based on everything before it."
     ]
   },
   {
@@ -23,10 +22,10 @@ const scriptData = [
     title: "2. The Evolution",
     Visual: Scene2Evolution,
     paragraphs: [
-      "In the 1990s, N-Grams looked only at the last two or three words. They had the memory of a goldfish.",
-      "By 2013, we learned to turn words into pure math (Embeddings). We could suddenly calculate meaning: King - Man + Woman = Queen.",
-      "But the leap came in 2017. Google published 'Attention Is All You Need', introducing the Transformer architecture.",
-      "Instead of reading word-by-word sequentially, Transformers read the entire passage simultaneously."
+      "In the 1990s, N-Grams had the memory of a goldfish.",
+      "By 2013, we learned to turn words into pure math.",
+      "But the leap came in 2017 with the Transformer architecture.",
+      "It reads the entire passage simultaneously."
     ]
   },
   {
@@ -34,10 +33,9 @@ const scriptData = [
     title: "3. Self-Attention",
     Visual: Scene3Attention,
     paragraphs: [
-      "A sequential model reads 'The astronaut finally boarded the rocket she...'",
-      "When it reaches 'she', it has to slowly look backwards to figure out who 'she' is.",
+      "A sequential model has to slowly look backwards to figure out context.",
       "Self-Attention evaluates every word against every other word instantly.",
-      "It mathematically binds 'she' directly to 'astronaut', understanding the entire syntactic web in a single massive parallel computation."
+      "It binds concepts securely in a single massive computation."
     ]
   },
   {
@@ -45,9 +43,9 @@ const scriptData = [
     title: "4. Tokenization",
     Visual: Scene4Tokens,
     paragraphs: [
-      "Despite being called 'Language' models, they cannot read words.",
-      "Text is sliced into optimal computational blocks called Tokens. 'Unbelievable' breaks into 'un', 'believ', 'able'.",
-      "This is critical because API costs and computational limits are strictly based on token counts, not words."
+      "Text is sliced into optimal computational blocks called Tokens.",
+      "'Unbelievable' breaks into 'un', 'believ', 'able'.",
+      "API costs and limits are strictly based on tokens, not words."
     ]
   },
   {
@@ -55,10 +53,9 @@ const scriptData = [
     title: "5. The Context Window",
     Visual: Scene5Context,
     paragraphs: [
-      "The Context Window is the strict maximum number of tokens the model can hold in its working memory at one time.",
-      "GPT-3 launched with a 4,000 token limit. Today, models can hold millions.",
-      "But beware: when the context window fills up, the oldest data simply falls out of existence.",
-      "Furthermore, models suffer from 'Lost in the Middle'—they remember what you said first and last, but get blurry in the center."
+      "This is the strict memory limit of the model.",
+      "When the window fills up, the oldest data vanishes.",
+      "Models typically recall what they read first and last best."
     ]
   },
   {
@@ -66,10 +63,9 @@ const scriptData = [
     title: "6. Model Selection",
     Visual: Scene6Decision,
     paragraphs: [
-      "Do not default to the biggest, heaviest model for every task.",
-      "For massive volume, fast parsing, or simple classification, use a lightweight, cheap model (Gemini Flash, Claude Haiku).",
-      "For profound reasoning, complex math, or foundational code architecture, use heavyweights (OpenAI o1, Claude Sonnet).",
-      "Pick the right engine for the workload."
+      "Do not default to the heaviest model for every task.",
+      "For massive volume or fast parsing, use lightweight models.",
+      "For profound reasoning or foundational code, use heavyweights."
     ]
   }
 ];
@@ -116,15 +112,26 @@ const SceneBlock = ({ data, index }) => {
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {data.paragraphs.map((text, i) => {
-             // Stagger the fade-in based on paragraph index, but once faded in, it stays visible until the end.
+             // Only show ONE sentence at a time.
+             // It fades in, stays visible for its segment, then fades out as the next begins.
              const numP = data.paragraphs.length;
-             const fadeStart = 0.05 + (i * (0.8 / numP));
-             const fadeEnd = fadeStart + 0.1;
+             const segmentLength = 0.9 / numP; // use most of the scroll space
              
-             const pOpacity = useTransform(smoothProgress, [fadeStart, fadeEnd], [0, 1]);
+             const startFadeIn = 0.05 + (i * segmentLength);
+             const fullyVisible = startFadeIn + (segmentLength * 0.15); // Quick fade in
+             const startFadeOut = fullyVisible + (segmentLength * 0.7); // Hold for most of the middle
+             const endFadeOut = startFadeIn + segmentLength; // Fade out right as the next begins
+             
+             const pOpacity = useTransform(
+                 smoothProgress, 
+                 [startFadeIn, fullyVisible, startFadeOut, endFadeOut], 
+                 [0, 1, 1, 0]
+             );
              
              return (
               <motion.p key={i} style={{ 
+                position: 'absolute', // Stack them on top of each other
+                width: '100%',
                 fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)', 
                 color: 'var(--text)',
                 lineHeight: 1.7,
