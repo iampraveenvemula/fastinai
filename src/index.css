@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
 
 /* ─── Minimal Elegant Design System ──────────────────────────── */
 :root {
@@ -365,7 +366,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #0a101f 0%, #030712 100%);
+  background: radial-gradient(circle at center, #263238 0%, #101418 100%);
   overflow: hidden;
 }
 
