@@ -101,7 +101,7 @@ const SceneBlock = ({ data, index }) => {
 
       {/* 2. HEADING — sticky at top with gradient fade below it */}
       <div className="scened-heading">
-        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
+        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
           {data.title}
         </h2>
         <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '12px', borderRadius: '2px' }} />
