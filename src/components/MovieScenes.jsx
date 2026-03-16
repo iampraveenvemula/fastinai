@@ -6,7 +6,7 @@ const chalkTheme = {
   stroke: "rgba(255, 255, 255, 0.85)",
   strokeWidth: 2.5,
   fill: "none",
-  fontFamily: "'Caveat', 'Comic Sans MS', cursive, sans-serif",
+  fontFamily: "'DM Sans', sans-serif",
   strokeLinecap: "round",
   strokeLinejoin: "round"
 };
@@ -28,25 +28,30 @@ export const Defs = () => (
       <stop offset="50%" stopColor="rgba(255, 255, 255, 0.85)" stopOpacity="1" />
       <stop offset="100%" stopColor="rgba(255, 255, 255, 0.85)" stopOpacity="0" />
     </linearGradient>
+    <clipPath id="wipe-reveal">
+      <motion.rect x="-400" y="-300" width="800" height="600" />
+    </clipPath>
   </defs>
 );
 
 // --- SCENE 1: Autocomplete (The Cursor) ---
 export const Scene1Autocomplete = ({ progress }) => {
-  // progress goes from 0 to 1 as the user scrolls through this section
-  const dashOffset = useTransform(progress, [0, 0.4], [1000, 0]);
-  const textOpacity = useTransform(progress, [0.3, 0.5], [0, 1]);
+  // Master timeline for the drawing sequence
+  const drawCircle = useTransform(progress, [0, 0.15], [1, 0]);
+  const dashOffset = useTransform(progress, [0.4, 0.6], [1000, 0]);
+  const textOpacity = useTransform(progress, [0.15, 0.4], [0, 1]); // Quick fade simulates quick writing
   const blinkOpacity = useTransform(progress, p => (Math.floor(p * 20) % 2 === 0 ? 1 : 0));
   
+  const drawBranches = useTransform(progress, [0.6, 0.8], [1, 0]);
   const branchScale = useTransform(progress, [0.6, 0.8], [0, 1]);
-  const branchOpacity = useTransform(progress, [0.6, 0.8], [0, 1]);
 
   return (
     <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(450, 300)">
-         {/* Central Node */}
-         <circle cx="0" cy="0" r="40" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+         {/* Central Node drawn in */}
+         <motion.circle cx="0" cy="0" r="40" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" 
+             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawCircle }} />
          
          {/* The Typed Text */}
          <motion.text x="-180" y="-120" fontSize="32" fill="#ffffff" fontWeight="300" 
@@ -60,14 +65,16 @@ export const Scene1Autocomplete = ({ progress }) => {
          <motion.path d="M 0 40 C 0 100 120 150 120 200" stroke="#fef08a" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} opacity="0.3" filter="url(#chalk)" />
          
          {/* Hot Branch */}
-         <motion.g style={{ scale: branchScale, opacity: branchOpacity, originX: "-120px", originY: "200px" }}>
-            <rect x="-180" y="200" width="120" height="50" rx="4" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" filter="url(#chalk)" />
+         <motion.g style={{ scale: branchScale, opacity: branchScale, originX: "-120px", originY: "200px" }}>
+            <motion.rect x="-180" y="200" width="120" height="50" rx="4" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" filter="url(#chalk)" 
+                 pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBranches }} />
             <text x="-120" y="232" textAnchor="middle" fontSize="20" fill="#fff" letterSpacing="1">HOT [0.85]</text>
          </motion.g>
 
          {/* Cold Branch */}
-         <motion.g style={{ scale: branchScale, opacity: branchOpacity, originX: "120px", originY: "200px" }}>
-            <rect x="60" y="200" width="120" height="50" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.6)" />
+         <motion.g style={{ scale: branchScale, opacity: branchScale, originX: "120px", originY: "200px" }}>
+            <motion.rect x="60" y="200" width="120" height="50" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" 
+                 pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBranches }} />
             <text x="120" y="232" textAnchor="middle" fontSize="18" fill="rgba(255,255,255,0.6)" letterSpacing="1">COLD [0.15]</text>
          </motion.g>
       </g>
@@ -130,6 +137,10 @@ export const Scene3Attention = ({ progress }) => {
   const lineDraw = useTransform(progress, [0.6, 0.85], [1000, 0]);
   const highlightOpacity = useTransform(progress, [0.75, 0.9], [0, 1]);
   
+  const drawBox1 = useTransform(progress, [0.1, 0.3], [1, 0]);
+  const drawBox2 = useTransform(progress, [0.3, 0.5], [1, 0]);
+  const drawBox3 = useTransform(progress, [0.5, 0.7], [1, 0]);
+  
   return (
     <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
@@ -137,19 +148,22 @@ export const Scene3Attention = ({ progress }) => {
         
         {/* Sentence Grid Layout */}
         <text x="-250" y="-50" fontSize="24" fill="rgba(255,255,255,0.6)">The</text>
-        <rect x="-180" y="-80" width="140" height="40" fill="rgba(255,255,255,0.05)" />
-        <text x="-110" y="-50" textAnchor="middle" fontSize="24" fill="#fff" fontWeight="bold">astronaut</text>
+        <motion.rect x="-180" y="-80" width="140" height="40" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.8)" 
+             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBox1 }} rx="4" filter="url(#chalk)"/>
+        <text x="-110" y="-50" textAnchor="middle" fontSize="24" fill="#ffffff" fontWeight="bold">astronaut</text>
         
         <text x="0" y="-50" textAnchor="middle" fontSize="24" fill="rgba(255,255,255,0.6)">finally</text>
         
-        <rect x="80" y="-80" width="120" height="40" fill="rgba(250, 204, 21, 0.05)" />
+        <motion.rect x="80" y="-80" width="120" height="40" fill="rgba(252, 211, 77, 0.1)" stroke="#fef08a" 
+             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBox2 }} rx="4" filter="url(#chalk)"/>
         <text x="140" y="-50" textAnchor="middle" fontSize="24" fill="#fef08a" fontWeight="bold">boarded</text>
 
         <text x="-150" y="50" fontSize="24" fill="rgba(255,255,255,0.6)">the</text>
         <text x="-50" y="50" fontSize="24" fill="rgba(255,255,255,0.8)">rocket</text>
         
-        <rect x="80" y="20" width="80" height="40" fill="rgba(255,255,255,0.05)" />
-        <text x="120" y="50" textAnchor="middle" fontSize="24" fill="#fff" fontWeight="bold">she</text>
+        <motion.rect x="80" y="20" width="80" height="40" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.8)" 
+             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBox3 }} rx="4" filter="url(#chalk)"/>
+        <text x="120" y="50" textAnchor="middle" fontSize="24" fill="#ffffff" fontWeight="bold">she</text>
 
         {/* Attention Connection: 'she' to 'astronaut' */}
         <motion.path 
