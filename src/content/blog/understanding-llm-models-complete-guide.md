@@ -1,4 +1,4 @@
-# The Complete Beginner's Guide to Large Language Models (LLMs)
+# Introduction to Large Language Models (LLMs)
 ## From "What is a Language Model?" to "Which Model Should I Use at Work?"
 
 > **Who is this for?** Developers, product managers, and AI enthusiasts who want a deep, honest understanding of how LLMs work — and how to make smart decisions about using them in real projects.

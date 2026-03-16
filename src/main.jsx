@@ -14,10 +14,10 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/blog/understanding-llm-models-complete-guide" element={
-          <BlogPost 
-            title="The Complete Beginner's Guide to Large Language Models (LLMs)" 
-            date="March 2026" 
-            content={llmGuideContent} 
+          <BlogPost
+            title="Introduction to Large Language Models (LLMs)"
+            date="March 2026"
+            content={llmGuideContent}
           />
         } />
       </Routes>

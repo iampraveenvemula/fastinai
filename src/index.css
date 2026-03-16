@@ -356,38 +356,41 @@ body {
   background: #030712;
 }
 
-/* Visual: Full-screen sticky BACKGROUND — text scrolls over the top of it */
+/* Visual: Takes top 40vh on mobile to prevent overlapping text */
 .scened-visual {
   position: sticky;
   top: 0;
   width: 100%;
-  height: 100vh;
+  height: 40vh;
   z-index: 1; /* Behind everything */
   display: flex;
   align-items: center;
   justify-content: center;
   background: radial-gradient(circle at center, #0B1120 0%, #030712 100%);
   overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Heading: floats at the very top with a gradient mask so text underneath fades invisibly */
+/* Heading: floats at the top */
 .scened-heading {
   position: sticky;
-  top: 64px;
+  top: 0;
   width: 100%;
-  padding: 20px 5%;
-  /* Gradient fades from solid at top to transparent — lets text emerge smoothly into view */
-  background: linear-gradient(to bottom, #030712 55%, transparent 100%);
+  padding: 15px 5%;
+  background: linear-gradient(to bottom, #030712 80%, transparent 100%);
   z-index: 20;
 }
 
-/* Text: flows freely over the full-screen diagram — opacity is controlled by JS */
+/* Text: Stacks below visual on mobile */
 .scened-text-flow {
-  position: relative;
+  position: sticky;
+  top: 40vh;
   z-index: 10;
   width: 100%;
-  padding: 10vh 7%;
-  padding-bottom: 60vh;
+  padding: 20px 5%;
+  padding-bottom: 10vh;
+  background: #030712;
+  min-height: 60vh;
 }
 
 @media (min-width: 900px) {
@@ -399,9 +402,9 @@ body {
       "heading visual"
       "text    visual";
     align-items: start;
+    min-height: 300vh;
   }
 
-  /* Reset all mobile sticky/bottom positioning for desktop */
   .scened-heading {
     grid-area: heading;
     position: sticky;
@@ -409,7 +412,6 @@ body {
     bottom: auto;
     padding: 6vh 5vw 2vh 5vw;
     background: transparent;
-    box-shadow: none;
     z-index: 10;
   }
 
@@ -418,14 +420,17 @@ body {
     position: sticky;
     top: 0;
     bottom: auto;
-    width: auto;
+    width: 100%;
     height: 100vh;
-    box-shadow: none;
+    border-bottom: none;
   }
 
   .scened-text-flow {
     grid-area: text;
-    padding: 4vh 5vw;
-    padding-bottom: 30vh;
+    position: sticky;
+    top: 30vh;
+    padding: 0 5vw;
+    background: transparent;
+    min-height: auto;
   }
 }

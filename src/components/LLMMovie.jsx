@@ -109,9 +109,6 @@ const SceneBlock = ({ data, index }) => {
 
       {/* 3. TEXT — sticky block that stays visible while the scene animation plays */}
       <motion.div className="scened-text-flow" style={{ 
-          position: 'sticky', 
-          top: 'max(30vh, 200px)', 
-          zIndex: 10,
           opacity: useTransform(smoothProgress, [0.0, 0.05, 0.95, 1.0], [0, 1, 1, 0])
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', position: 'relative' }}>
