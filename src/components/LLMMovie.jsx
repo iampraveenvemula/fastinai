@@ -114,37 +114,40 @@ const SceneBlock = ({ data, index }) => {
           zIndex: 10,
           opacity: useTransform(smoothProgress, [0.0, 0.05, 0.95, 1.0], [0, 1, 1, 0])
       }}>
-        <div style={{ display: 'flex', flexDirection: 'column', position: 'relative', minHeight: '150px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', position: 'relative' }}>
           {data.paragraphs.map((text, i) => {
-             // Exact chunks: each paragraph gets exactly 1/N of the scroll space.
+             // We drop the absolute positioning completely.
+             // Sentences appear one-by-one and STACK, rather than replacing each other.
              const numP = data.paragraphs.length;
              const segmentLength = 1.0 / numP; 
              
+             // The point at which this sentence should start fading in
              const startPoint = i * segmentLength;
-             const endPoint = (i + 1) * segmentLength;
+             const fadeInEnd = startPoint + (segmentLength * 0.2);
              
-             // Quick 10% fade in at the start of its chunk, Quick 10% fade out at the end.
-             const fadeInEnd = startPoint + (segmentLength * 0.15);
-             const fadeOutStart = endPoint - (segmentLength * 0.15);
-             
+             // The sentence stays opcaity: 1 until the very end of the *entire* scene.
              const pOpacity = useTransform(
                  smoothProgress, 
-                 [startPoint, fadeInEnd, fadeOutStart, endPoint], 
-                 [0, 1, 1, 0]
+                 [startPoint, fadeInEnd], 
+                 [0, 1] // It never fades out locally, only the parent container fades at 0.95
+             );
+             
+             // Optional: Add a slight upward slide as it fades in for a premium feel
+             const pY = useTransform(
+                 smoothProgress,
+                 [startPoint, fadeInEnd],
+                 [20, 0]
              );
              
              return (
               <motion.p key={i} style={{ 
-                position: 'absolute', // Stack them identically
-                top: 0,
-                left: 0,
-                width: '100%',
-                fontSize: 'clamp(1.15rem, 2.2vw, 1.5rem)', 
+                fontSize: 'clamp(1.15rem, 2vw, 1.4rem)', 
                 color: 'var(--text)',
                 lineHeight: 1.7,
                 fontWeight: 400,
                 textShadow: '0 2px 10px rgba(0,0,0,0.8)',
-                opacity: pOpacity
+                opacity: pOpacity,
+                y: pY
               }}>
                 {text}
               </motion.p>
