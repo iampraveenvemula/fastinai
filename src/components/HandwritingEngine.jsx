@@ -6,7 +6,7 @@ export const chalkTheme = {
   stroke: "rgba(255, 255, 255, 0.85)",
   strokeWidth: 2.5,
   fill: "none",
-  fontFamily: "'Caveat', 'Comic Sans MS', cursive, sans-serif", // Re-applying a nice handwriting font
+  fontFamily: "'Patrick Hand', cursive, sans-serif", // Clean, readable handwriting font
   strokeLinecap: "round",
   strokeLinejoin: "round"
 };
@@ -55,7 +55,7 @@ export const DrawText = ({ text, delay = 0, duration = 2, className = "", style 
       className={className}
       style={{ 
         ...style,
-        fontFamily: "'Caveat', cursive, sans-serif", // Ensure handwritten style
+        fontFamily: "'Patrick Hand', cursive, sans-serif", // Ensure handwritten style
         display: 'inline-block',
         color: '#ffffff'
       }}

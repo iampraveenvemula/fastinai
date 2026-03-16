@@ -124,7 +124,7 @@ export default function HandwrittenBlog() {
     <div style={{ background: '#263238', color: '#ffffff', minHeight: '100vh', padding: '60px 0' }}>
        <div style={{ textAlign: 'center', marginBottom: '10vh' }}>
           <Scene margin="0%">
-             <DrawText as="h1" text="Inside the Machine" duration={2} style={{ fontSize: '4rem', fontFamily: "'Caveat', cursive", color: '#fef08a' }} />
+             <DrawText as="h1" text="Inside the Machine" duration={2} style={{ fontSize: '4rem', fontFamily: "'Patrick Hand', cursive", color: '#fef08a' }} />
              <br />
              <DrawText as="p" text="A hand-drawn summary of LLM mechanics." duration={2} delay={2.5} style={{ fontSize: '1.5rem', opacity: 0.7 }} />
           </Scene>
@@ -137,7 +137,7 @@ export default function HandwrittenBlog() {
        
        <Scene>
           <div style={{ textAlign: 'center', marginTop: '10vh' }}>
-             <DrawText as="h3" text="The End" duration={1.5} style={{ fontSize: '2rem', color: 'rgba(255,255,255,0.4)', fontFamily: "'Caveat', cursive" }} />
+             <DrawText as="h3" text="The End" duration={1.5} style={{ fontSize: '2rem', color: 'rgba(255,255,255,0.4)', fontFamily: "'Patrick Hand', cursive" }} />
           </div>
        </Scene>
     </div>
