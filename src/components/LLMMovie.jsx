@@ -101,10 +101,10 @@ const SceneBlock = ({ data, index }) => {
 
       {/* 2. HEADING — sticky at top with gradient fade below it */}
       <div className="scened-heading">
-        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', color: '#ffffff', fontFamily: 'Fraunces, serif', fontWeight: 300, letterSpacing: '-1px', margin: 0 }}>
+        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', color: '#ffffff', fontFamily: 'Inter, sans-serif', fontWeight: 600, letterSpacing: '-0.5px', margin: 0 }}>
           {data.title}
         </h2>
-        <div style={{ width: '40px', height: '4px', background: 'var(--primary)', marginTop: '12px', borderRadius: '2px' }} />
+        <div style={{ width: '40px', height: '4px', background: '#22d3ee', marginTop: '12px', borderRadius: '2px', boxShadow: '0 0 10px rgba(34, 211, 238, 0.5)' }} />
       </div>
 
       {/* 3. TEXT — sticky block that stays visible while the scene animation plays */}

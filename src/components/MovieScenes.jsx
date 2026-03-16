@@ -1,81 +1,97 @@
 import React from 'react';
 import { motion, useTransform } from 'framer-motion';
 
-// --- Shared Styles for the "Chalkboard" aesthetic ---
-const chalkTheme = {
-  stroke: "rgba(255, 255, 255, 0.85)",
-  strokeWidth: 2.5,
+// --- Shared Styles for the "Glass & Light" aesthetic ---
+const glassTheme = {
+  stroke: "rgba(255, 255, 255, 0.2)",
+  strokeWidth: 1.5,
   fill: "none",
-  fontFamily: "'DM Sans', sans-serif",
+  fontFamily: "'Inter', sans-serif",
   strokeLinecap: "round",
   strokeLinejoin: "round"
 };
 
-// CHALK FILTERS
+const colors = {
+  cyan: "#22d3ee",
+  violet: "#a78bfa",
+  blue: "#3b82f6",
+  white: "#f8fafc",
+  glassFill: "url(#glass-gradient)",
+  glassStroke: "rgba(255, 255, 255, 0.15)",
+};
+
+// GLOW FILTERS AND DEFS
 export const Defs = () => (
   <defs>
-    <filter id="chalk" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" result="noise" />
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-      <feGaussianBlur in="displaced" stdDeviation="0.6" result="blurred" />
+    <filter id="glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur2"/>
       <feMerge>
-        <feMergeNode in="blurred" />
-        <feMergeNode in="SourceGraphic" opacity="0.8" />
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <linearGradient id="chalk-fade" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stopColor="rgba(255, 255, 255, 0.85)" stopOpacity="0" />
-      <stop offset="50%" stopColor="rgba(255, 255, 255, 0.85)" stopOpacity="1" />
-      <stop offset="100%" stopColor="rgba(255, 255, 255, 0.85)" stopOpacity="0" />
+    <filter id="glow-violet" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="glass-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stopColor="rgba(255,255,255,0.08)" />
+      <stop offset="100%" stopColor="rgba(255,255,255,0.01)" />
     </linearGradient>
-    <clipPath id="wipe-reveal">
-      <motion.rect x="-400" y="-300" width="800" height="600" />
-    </clipPath>
+    <linearGradient id="fade-right" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stopColor={colors.white} stopOpacity="0" />
+      <stop offset="50%" stopColor={colors.white} stopOpacity="1" />
+      <stop offset="100%" stopColor={colors.white} stopOpacity="0" />
+    </linearGradient>
   </defs>
 );
 
 // --- SCENE 1: Autocomplete (The Cursor) ---
 export const Scene1Autocomplete = ({ progress }) => {
-  // Master timeline for the drawing sequence
-  const drawCircle = useTransform(progress, [0, 0.15], [1, 0]);
-  const dashOffset = useTransform(progress, [0.4, 0.6], [1000, 0]);
-  const textOpacity = useTransform(progress, [0.15, 0.4], [0, 1]); // Quick fade simulates quick writing
+  const dashOffset = useTransform(progress, [0, 0.4], [1000, 0]);
+  const textOpacity = useTransform(progress, [0.3, 0.5], [0, 1]);
   const blinkOpacity = useTransform(progress, p => (Math.floor(p * 20) % 2 === 0 ? 1 : 0));
   
-  const drawBranches = useTransform(progress, [0.6, 0.8], [1, 0]);
   const branchScale = useTransform(progress, [0.6, 0.8], [0, 1]);
+  const branchOpacity = useTransform(progress, [0.6, 0.8], [0, 1]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(450, 300)">
-         {/* Central Node drawn in */}
-         <motion.circle cx="0" cy="0" r="40" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" 
-             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawCircle }} />
+         {/* Central Node */}
+         <circle cx="0" cy="0" r="40" fill={colors.glassFill} stroke={colors.cyan} filter="url(#glow-cyan)" />
+         <circle cx="0" cy="0" r="30" fill="none" stroke="rgba(255,255,255,0.1)" />
          
          {/* The Typed Text */}
-         <motion.text x="-180" y="-120" fontSize="32" fill="#ffffff" fontWeight="300" 
+         <motion.text x="-180" y="-120" fontSize="32" fill={colors.white} fontWeight="300" 
             style={{ opacity: textOpacity }} letterSpacing="2">
             "The weather is..."
          </motion.text>
-         <motion.rect x="80" y="-150" width="4" height="40" fill="#fef08a" filter="url(#chalk)" style={{ opacity: blinkOpacity }} />
+         <motion.rect x="80" y="-150" width="2" height="40" fill={colors.cyan} filter="url(#glow-cyan)" style={{ opacity: blinkOpacity }} />
 
-         {/* Connection Lines generating out */}
-         <motion.path d="M 0 40 C 0 100 -120 150 -120 200" stroke="#fef08a" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} opacity="0.3" filter="url(#chalk)" />
-         <motion.path d="M 0 40 C 0 100 120 150 120 200" stroke="#fef08a" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} opacity="0.3" filter="url(#chalk)" />
+         {/* Fiber Optic Data Lines */}
+         <motion.path d="M 0 40 C 0 100 -120 150 -120 200" stroke={colors.cyan} strokeWidth="2" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} opacity="0.8" filter="url(#glow-cyan)" />
+         <motion.path d="M 0 40 C 0 100 120 150 120 200" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="1000" style={{ strokeDashoffset: dashOffset }} />
          
-         {/* Hot Branch */}
-         <motion.g style={{ scale: branchScale, opacity: branchScale, originX: "-120px", originY: "200px" }}>
-            <motion.rect x="-180" y="200" width="120" height="50" rx="4" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" filter="url(#chalk)" 
-                 pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBranches }} />
-            <text x="-120" y="232" textAnchor="middle" fontSize="20" fill="#fff" letterSpacing="1">HOT [0.85]</text>
+         {/* Hot Branch (High Probability) */}
+         <motion.g style={{ scale: branchScale, opacity: branchOpacity, originX: "-120px", originY: "200px" }}>
+            <rect x="-180" y="200" width="120" height="50" rx="6" fill={colors.glassFill} stroke={colors.cyan} />
+            <rect x="-178" y="202" width="116" height="46" rx="4" fill="rgba(34, 211, 238, 0.05)" stroke="none" />
+            <text x="-120" y="232" textAnchor="middle" fontSize="16" fill={colors.white} fontWeight="500" letterSpacing="1">HOT [0.85]</text>
          </motion.g>
 
          {/* Cold Branch */}
-         <motion.g style={{ scale: branchScale, opacity: branchScale, originX: "120px", originY: "200px" }}>
-            <motion.rect x="60" y="200" width="120" height="50" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" 
-                 pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBranches }} />
-            <text x="120" y="232" textAnchor="middle" fontSize="18" fill="rgba(255,255,255,0.6)" letterSpacing="1">COLD [0.15]</text>
+         <motion.g style={{ scale: branchScale, opacity: branchOpacity, originX: "120px", originY: "200px" }}>
+            <rect x="60" y="200" width="120" height="50" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
+            <text x="120" y="232" textAnchor="middle" fontSize="14" fill="rgba(255,255,255,0.4)" letterSpacing="1">COLD [0.15]</text>
          </motion.g>
       </g>
     </svg>
@@ -89,43 +105,46 @@ export const Scene2Evolution = ({ progress }) => {
   const node2Opacity = useTransform(progress, [0.3, 0.4], [0, 1]);
   const node3Opacity = useTransform(progress, [0.5, 0.6], [0, 1]);
   
-  const explosionScale = useTransform(progress, [0.65, 0.8], [0, 1.5]);
-  const explosionOpacity = useTransform(progress, [0.65, 0.8, 0.9], [0, 1, 0]);
+  const pulseScale = useTransform(progress, [0.65, 0.8], [1, 2.5]);
+  const pulseOpacity = useTransform(progress, [0.65, 0.8, 0.9], [0, 1, 0]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(150, 300)">
         
-        {/* Main Timeline Data Stream */}
-        <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="rgba(255,255,255,0.6)" strokeWidth="1" />
-        <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="url(#chalk-fade)" strokeWidth="4" filter="url(#chalk)" style={{ opacity: 0.5 }} />
+        {/* Main Neural River */}
+        <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+        <motion.line x1="0" y1="0" x2={lineLength} y2="0" stroke="url(#fade-right)" strokeWidth="8" style={{ opacity: 0.1 }} />
 
         {/* N-Grams */}
         <motion.g style={{ opacity: node1Opacity }} transform="translate(100, 0)">
-          <circle cx="0" cy="0" r="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.6)" />
-          <text x="0" y="30" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="14">1990s</text>
-          <text x="0" y="-20" textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize="16" letterSpacing="2">N-GRAMS</text>
+          <circle cx="0" cy="0" r="12" fill={colors.glassFill} stroke={colors.glassStroke} />
+          <circle cx="0" cy="0" r="4" fill="rgba(255,255,255,0.4)" stroke="none" />
+          <text x="0" y="35" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="12">1990s</text>
+          <text x="0" y="-25" textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize="14" fontWeight="600" letterSpacing="2">N-GRAMS</text>
         </motion.g>
 
-        {/* Neural */}
+        {/* Neural Embeddings */}
         <motion.g style={{ opacity: node2Opacity }} transform="translate(300, 0)">
-          <circle cx="0" cy="0" r="8" fill="rgba(255,255,255,0.05)" stroke="#fef08a" filter="url(#chalk)" />
-          <text x="0" y="30" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="14">2013</text>
-          <text x="0" y="-20" textAnchor="middle" fill="#fff" fontSize="16" letterSpacing="2">EMBEDDINGS (RNN)</text>
+          <circle cx="0" cy="0" r="16" fill={colors.glassFill} stroke={colors.violet} filter="url(#glow-violet)" opacity="0.4" />
+          <circle cx="0" cy="0" r="12" fill={colors.glassFill} stroke={colors.violet} />
+          <text x="0" y="35" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="12">2013</text>
+          <text x="0" y="-25" textAnchor="middle" fill={colors.white} fontSize="14" fontWeight="600" letterSpacing="2">EMBEDDINGS (RNN)</text>
         </motion.g>
 
         {/* Transformers */}
         <motion.g style={{ opacity: node3Opacity }} transform="translate(500, 0)">
-          <circle cx="0" cy="0" r="10" fill="#fef08a" filter="url(#chalk)" />
-          <text x="0" y="30" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="14">2017</text>
-          <text x="0" y="-20" textAnchor="middle" fill="#fef08a" fontSize="20" fontWeight="bold" letterSpacing="2">TRANSFORMER</text>
+          <circle cx="0" cy="0" r="24" fill={colors.glassFill} stroke={colors.cyan} filter="url(#glow-cyan)" opacity="0.6"/>
+          <circle cx="0" cy="0" r="16" fill={colors.cyan} stroke="none" />
+          <text x="0" y="45" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="12">2017</text>
+          <text x="0" y="-35" textAnchor="middle" fill={colors.cyan} fontSize="18" fontWeight="bold" letterSpacing="2" filter="url(#glow-cyan)">TRANSFORMER</text>
           
-          {/* Explosion / Shockwave */}
-          <motion.circle cx="0" cy="0" r="100" stroke="#fef08a" strokeWidth="2" fill="none" 
-             style={{ scale: explosionScale, opacity: explosionOpacity }} filter="url(#chalk)" />
-          <motion.circle cx="0" cy="0" r="150" stroke="#fef08a" strokeWidth="1" fill="none" 
-             style={{ scale: explosionScale, opacity: explosionOpacity }} />
+          {/* Energy Pulse */}
+          <motion.circle cx="0" cy="0" r="30" stroke={colors.cyan} strokeWidth="2" fill="none" 
+             style={{ scale: pulseScale, opacity: pulseOpacity }} filter="url(#glow-cyan)" />
+          <motion.circle cx="0" cy="0" r="40" stroke={colors.cyan} strokeWidth="1" fill="none" 
+             style={{ scale: pulseScale, opacity: pulseOpacity }} />
         </motion.g>
       </g>
     </svg>
@@ -137,53 +156,48 @@ export const Scene3Attention = ({ progress }) => {
   const lineDraw = useTransform(progress, [0.6, 0.85], [1000, 0]);
   const highlightOpacity = useTransform(progress, [0.75, 0.9], [0, 1]);
   
-  const drawBox1 = useTransform(progress, [0.1, 0.3], [1, 0]);
-  const drawBox2 = useTransform(progress, [0.3, 0.5], [1, 0]);
-  const drawBox3 = useTransform(progress, [0.5, 0.7], [1, 0]);
-  
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(450, 300)">
         
-        {/* Sentence Grid Layout */}
-        <text x="-250" y="-50" fontSize="24" fill="rgba(255,255,255,0.6)">The</text>
-        <motion.rect x="-180" y="-80" width="140" height="40" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.8)" 
-             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBox1 }} rx="4" filter="url(#chalk)"/>
-        <text x="-110" y="-50" textAnchor="middle" fontSize="24" fill="#ffffff" fontWeight="bold">astronaut</text>
+        {/* Sentence Grid Layout (Modern typography) */}
+        <text x="-250" y="-50" fontSize="20" fill="rgba(255,255,255,0.4)">The</text>
+        <rect x="-180" y="-80" width="140" height="40" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
+        <text x="-110" y="-55" textAnchor="middle" fontSize="20" fill={colors.white} fontWeight="500">astronaut</text>
         
-        <text x="0" y="-50" textAnchor="middle" fontSize="24" fill="rgba(255,255,255,0.6)">finally</text>
+        <text x="0" y="-50" textAnchor="middle" fontSize="20" fill="rgba(255,255,255,0.4)">finally</text>
         
-        <motion.rect x="80" y="-80" width="120" height="40" fill="rgba(252, 211, 77, 0.1)" stroke="#fef08a" 
-             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBox2 }} rx="4" filter="url(#chalk)"/>
-        <text x="140" y="-50" textAnchor="middle" fontSize="24" fill="#fef08a" fontWeight="bold">boarded</text>
+        <rect x="80" y="-80" width="120" height="40" rx="6" fill="rgba(34, 211, 238, 0.05)" stroke={colors.cyan} filter="url(#glow-cyan)" opacity="0.5"/>
+        <rect x="80" y="-80" width="120" height="40" rx="6" fill="none" stroke={colors.cyan} />
+        <text x="140" y="-55" textAnchor="middle" fontSize="20" fill={colors.cyan} fontWeight="600">boarded</text>
 
-        <text x="-150" y="50" fontSize="24" fill="rgba(255,255,255,0.6)">the</text>
-        <text x="-50" y="50" fontSize="24" fill="rgba(255,255,255,0.8)">rocket</text>
+        <text x="-150" y="50" fontSize="20" fill="rgba(255,255,255,0.4)">the</text>
+        <text x="-50" y="50" fontSize="20" fill="rgba(255,255,255,0.6)">rocket</text>
         
-        <motion.rect x="80" y="20" width="80" height="40" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.8)" 
-             pathLength="1" strokeDasharray="1" style={{ strokeDashoffset: drawBox3 }} rx="4" filter="url(#chalk)"/>
-        <text x="120" y="50" textAnchor="middle" fontSize="24" fill="#ffffff" fontWeight="bold">she</text>
+        <rect x="80" y="20" width="80" height="40" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
+        <text x="120" y="45" textAnchor="middle" fontSize="20" fill={colors.white} fontWeight="500">she</text>
 
-        {/* Attention Connection: 'she' to 'astronaut' */}
+        {/* Attention Arc: 'she' to 'astronaut' */}
         <motion.path 
           d="M 120 20 C 120 -80 -110 -20 -110 -40" 
-          stroke="#fef08a" strokeWidth="3" filter="url(#chalk)" 
+          stroke={colors.cyan} strokeWidth="2" filter="url(#glow-cyan)" 
           strokeDasharray="1000" style={{ strokeDashoffset: lineDraw }} 
         />
         
-        {/* Attention Connection: 'boarded' to 'rocket' */}
+        {/* Weak Attention */}
         <motion.path 
           d="M 140 -40 C 140 0 -30 -10 -30 30" 
-          stroke="#fef08a" strokeWidth="2" strokeDasharray="6 6" opacity="0.5"
+          stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="4 4" 
           style={{ strokeDashoffset: lineDraw }}
         />
 
-        {/* Global Highlight Overlay */}
+        {/* Data Link Nodes */}
         <motion.g style={{ opacity: highlightOpacity }}>
-          <circle cx="0" cy="-10" r="300" fill="url(#chalk-fade)" opacity="0.1" />
-          <circle cx="-110" cy="-60" r="6" fill="#fef08a" filter="url(#chalk)" />
-          <circle cx="120" cy="40" r="6" fill="#fef08a" filter="url(#chalk)" />
+          <circle cx="-110" cy="-60" r="4" fill={colors.cyan} filter="url(#glow-cyan)" />
+          <circle cx="120" cy="40" r="4" fill={colors.cyan} filter="url(#glow-cyan)" />
+          <circle cx="-110" cy="-60" r="10" fill="none" stroke={colors.cyan} opacity="0.4" />
+          <circle cx="120" cy="40" r="10" fill="none" stroke={colors.cyan} opacity="0.4" />
         </motion.g>
 
       </g>
@@ -198,35 +212,36 @@ export const Scene4Tokens = ({ progress }) => {
   const tokenOpacity = useTransform(progress, [0.5, 0.66], [0, 1]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(450, 300)">
         
         {/* Core Word */}
-        <text x="0" y="0" textAnchor="middle" fontSize="48" fill="#fff" fontWeight="bold" letterSpacing="4">
+        <text x="0" y="0" textAnchor="middle" fontSize="48" fill={colors.white} fontWeight="700" letterSpacing="4">
           <tspan dx="-80">un</tspan>
           <tspan dx="20">believ</tspan>
           <tspan dx="20">able</tspan>
         </text>
 
-        {/* Precision Lasers cutting the word */}
-        <motion.line x1="-80" y1={sliceY} x2="-80" y2="100" stroke="#fca5a5" strokeWidth="2" filter="url(#chalk)" />
-        <motion.line x1="80" y1={sliceY} x2="80" y2="100" stroke="#fca5a5" strokeWidth="2" filter="url(#chalk)" />
+        {/* Lasers cutting the word */}
+        <motion.line x1="-80" y1={sliceY} x2="-80" y2="100" stroke={colors.violet} strokeWidth="2" filter="url(#glow-violet)" />
+        <motion.line x1="80" y1={sliceY} x2="80" y2="100" stroke={colors.violet} strokeWidth="2" filter="url(#glow-violet)" />
 
-        {/* Sliced Tokens moving apart */}
+        {/* Data Chips (Tokens) */}
         <motion.g style={{ x: useTransform(splitOffset, v => -v), opacity: tokenOpacity }}>
-          <rect x="-200" y="60" width="100" height="40" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" />
-          <text x="-150" y="85" textAnchor="middle" fill="#fef08a" fontSize="14" letterSpacing="2">TOKEN_42</text>
+          <rect x="-200" y="60" width="100" height="40" rx="4" fill={colors.glassFill} stroke="rgba(255,255,255,0.2)" />
+          <text x="-150" y="85" textAnchor="middle" fill={colors.white} fontSize="12" letterSpacing="1" fontWeight="500">TOKEN_42</text>
         </motion.g>
 
         <motion.g style={{ opacity: tokenOpacity }}>
-          <rect x="-70" y="60" width="140" height="40" fill="rgba(134, 239, 172, 0.1)" stroke="#86efac" />
-          <text x="0" y="85" textAnchor="middle" fill="#86efac" fontSize="14" letterSpacing="2">TOKEN_891</text>
+          <rect x="-70" y="60" width="140" height="40" rx="4" fill="rgba(34, 211, 238, 0.05)" stroke={colors.cyan} filter="url(#glow-cyan)" opacity="0.5" />
+          <rect x="-70" y="60" width="140" height="40" rx="4" fill="none" stroke={colors.cyan} />
+          <text x="0" y="85" textAnchor="middle" fill={colors.cyan} fontSize="12" letterSpacing="1" fontWeight="600">TOKEN_891</text>
         </motion.g>
 
         <motion.g style={{ x: splitOffset, opacity: tokenOpacity }}>
-          <rect x="100" y="60" width="100" height="40" fill="rgba(252, 211, 77, 0.1)" stroke="#fcd34d" />
-          <text x="150" y="85" textAnchor="middle" fill="#fcd34d" fontSize="14" letterSpacing="2">TOKEN_03</text>
+          <rect x="100" y="60" width="100" height="40" rx="4" fill={colors.glassFill} stroke="rgba(255,255,255,0.2)" />
+          <text x="150" y="85" textAnchor="middle" fill={colors.white} fontSize="12" letterSpacing="1" fontWeight="500">TOKEN_03</text>
         </motion.g>
 
       </g>
@@ -249,29 +264,29 @@ export const Scene5Context = ({ progress }) => {
   const slideLeft = useTransform(progress, [0.6, 0.8], [0, -60]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(450, 300)">
         
-        {/* Working Memory Array (The Desk) */}
-        <rect x="-160" y="40" width="320" height="20" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" />
-        <text x="0" y="80" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="14" letterSpacing="4">WORKING MEMORY BUFFER</text>
+        {/* Working Node Array Base */}
+        <rect x="-160" y="40" width="320" height="12" rx="6" fill={colors.glassFill} stroke="rgba(255,255,255,0.1)" />
+        <text x="0" y="75" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="12" letterSpacing="4" fontWeight="600">CONTEXT WINDOW (BUFFER)</text>
 
         {/* Initial Overloading Block */}
         <motion.g style={{ x: overflowX, y: overflowY, opacity: overflowOpacity, rotate: overflowRotate, originX: "-120px", originY: "20px" }}>
-          <rect x="-150" y="0" width="50" height="40" fill="rgba(252, 165, 165, 0.1)" stroke="#fca5a5" filter="url(#chalk)" />
-          <text x="-125" y="25" textAnchor="middle" fill="#fca5a5" fontSize="12">t-n</text>
+          <rect x="-150" y="0" width="50" height="40" rx="4" fill="rgba(167, 139, 250, 0.1)" stroke={colors.violet} filter="url(#glow-violet)" />
+          <text x="-125" y="25" textAnchor="middle" fill={colors.violet} fontSize="12" fontWeight="500">t-n</text>
         </motion.g>
 
         {/* Existing Blocks pushing left */}
         <motion.g style={{ x: slideLeft }}>
-          <motion.rect x="-90" y={block1Y} width="50" height="40" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" />
-          <motion.rect x="-30" y={block2Y} width="50" height="40" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" />
-          <motion.rect x="30" y={block3Y} width="50" height="40" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" />
+          <motion.rect x="-90" y={block1Y} width="50" height="40" rx="4" fill={colors.glassFill} stroke={colors.glassStroke} />
+          <motion.rect x="-30" y={block2Y} width="50" height="40" rx="4" fill={colors.glassFill} stroke={colors.glassStroke} />
+          <motion.rect x="30" y={block3Y} width="50" height="40" rx="4" fill={colors.glassFill} stroke={colors.glassStroke} />
         </motion.g>
         
-        {/* New Block causing the overflow */}
-        <motion.rect x="90" y={block4Y} width="50" height="40" fill="rgba(134, 239, 172, 0.1)" stroke="#86efac" filter="url(#chalk)" />
+        {/* Glowing New Block arriving */}
+        <motion.rect x="90" y={block4Y} width="50" height="40" rx="4" fill="rgba(34, 211, 238, 0.1)" stroke={colors.cyan} filter="url(#glow-cyan)" />
 
       </g>
     </svg>
@@ -289,36 +304,37 @@ export const Scene6Decision = ({ progress }) => {
   const node3Op = useTransform(progress, [0.85, 0.95], [0, 1]);
 
   return (
-    <svg viewBox="0 0 800 600" width="100%" height="100%" style={chalkTheme} preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 800 600" width="100%" height="100%" style={glassTheme} preserveAspectRatio="xMidYMid meet">
       <Defs />
       <g transform="translate(450, 200)">
         
         {/* Root Node: The Task */}
-        <rect x="-60" y="-20" width="120" height="40" rx="4" fill="rgba(255,255,255,0.05)" stroke="#fff" filter="url(#chalk)" />
-        <text x="0" y="5" textAnchor="middle" fill="#fff" fontSize="16" letterSpacing="2">THE TASK</text>
+        <rect x="-60" y="-20" width="120" height="40" rx="6" fill={colors.glassFill} stroke={colors.white} />
+        <text x="0" y="5" textAnchor="middle" fill={colors.white} fontSize="14" fontWeight="600" letterSpacing="2">THE TASK</text>
 
         {/* Fast Path */}
-        <motion.path d="M -60 0 C -200 0 -200 100 -200 150" stroke="rgba(255,255,255,0.6)" strokeDasharray="500" style={{ strokeDashoffset: lineDraw1 }} />
+        <motion.path d="M -60 0 C -200 0 -200 100 -200 150" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="500" style={{ strokeDashoffset: lineDraw1 }} />
         <motion.g style={{ opacity: node1Op }} transform="translate(-200, 150)">
-          <rect x="-60" y="0" width="120" height="40" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.6)" />
-          <text x="0" y="25" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="12">SPEED / VOLUME</text>
-          <text x="0" y="60" textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize="12">Gemini Flash</text>
+          <rect x="-70" y="0" width="140" height="40" rx="6" fill={colors.glassFill} stroke={colors.glassStroke} />
+          <text x="0" y="15" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="10" fontWeight="600">HIGH THROUGHPUT</text>
+          <text x="0" y="30" textAnchor="middle" fill={colors.white} fontSize="12" fontWeight="500">Gemini Flash</text>
         </motion.g>
 
         {/* Complex Path */}
-        <motion.path d="M 60 0 C 200 0 200 100 200 150" stroke="rgba(255,255,255,0.6)" strokeDasharray="500" style={{ strokeDashoffset: lineDraw2 }} />
+        <motion.path d="M 60 0 C 200 0 200 100 200 150" stroke={colors.violet} strokeWidth="2" filter="url(#glow-violet)" strokeDasharray="500" style={{ strokeDashoffset: lineDraw2 }} opacity="0.6"/>
         <motion.g style={{ opacity: node2Op }} transform="translate(200, 150)">
-          <rect x="-60" y="0" width="120" height="40" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.6)" />
-          <text x="0" y="25" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="12">HARD CODING</text>
-          <text x="0" y="60" textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize="12">Claude 3.5 Sonnet</text>
+          <rect x="-70" y="0" width="140" height="40" rx="6" fill="rgba(167, 139, 250, 0.05)" stroke={colors.violet} />
+          <text x="0" y="15" textAnchor="middle" fill={colors.violet} fontSize="10" fontWeight="600">COMPLEX REASONING</text>
+          <text x="0" y="30" textAnchor="middle" fill={colors.white} fontSize="12" fontWeight="500">Claude 3.5 Sonnet</text>
         </motion.g>
 
-        {/* General Path (The glowing center) */}
-        <motion.path d="M 0 20 L 0 200" stroke="#fef08a" strokeWidth="3" filter="url(#chalk)" strokeDasharray="500" style={{ strokeDashoffset: lineDraw3 }} />
+        {/* General Path (The main glowing center) */}
+        <motion.path d="M 0 20 L 0 200" stroke={colors.cyan} strokeWidth="3" filter="url(#glow-cyan)" strokeDasharray="500" style={{ strokeDashoffset: lineDraw3 }} />
         <motion.g style={{ opacity: node3Op }} transform="translate(0, 200)">
-           <rect x="-80" y="0" width="160" height="50" rx="4" fill="rgba(147, 197, 253, 0.1)" stroke="#fef08a" filter="url(#chalk)" />
-           <text x="0" y="30" textAnchor="middle" fill="#fff" fontSize="16" fontWeight="bold" letterSpacing="1">GENERAL PURPOSE</text>
-           <text x="0" y="70" textAnchor="middle" fill="#fef08a" fontSize="12">GPT-4o</text>
+           <rect x="-80" y="0" width="160" height="50" rx="6" fill="rgba(34, 211, 238, 0.05)" stroke={colors.cyan} filter="url(#glow-cyan)" opacity="0.5" />
+           <rect x="-80" y="0" width="160" height="50" rx="6" fill="none" stroke={colors.cyan} />
+           <text x="0" y="20" textAnchor="middle" fill={colors.white} fontSize="12" fontWeight="bold" letterSpacing="1">GENERAL PURPOSE</text>
+           <text x="0" y="38" textAnchor="middle" fill={colors.cyan} fontSize="14" fontWeight="500">GPT-4o</text>
         </motion.g>
 
       </g>
